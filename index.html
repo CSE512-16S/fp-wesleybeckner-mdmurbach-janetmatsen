@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.tile {
+  shape-rendering: crispEdges;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+</style>
+<script src="./d3/d3.js"></script>
+</head>
+<body>
+<script>
+
+var margin = {top: 20, right: 60, bottom: 20, left: 40},
+    width = 360 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+var x = d3.scale.linear().range([0, width]),
+    y = d3.scale.linear().range([0, height]),
+    z = d3.scale.linear().range(["white", "steelblue"]);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var data;
+
+// Read in Ht.txt and plot a pixel by pixel image
+// http://stackoverflow.com/questions/13870265/read-csv-tsv-with-no-header-line-in-d3
+d3.text("data/Ht.txt", function(text) {
+  var data = d3.tsv.parseRows(text).map(function(row) {
+    return row.map(function(value) {
+      return +value;
+    });
+  });
+
+  // Compute the x and y scale domains.
+  x.domain([0, data.length]);
+  y.domain([0, data.length]);
+  
+  // Flatten the matrix into a single array so we have a data
+  // object for each pixel
+  flatten = d3.merge(data);
+  
+  z.domain(d3.extent(flatten, function(d) {return d}));
+
+  // Display the tiles for each non-zero bucket.
+  svg.selectAll(".tile")
+      .data(flatten).enter().append("rect")
+      .attr("class", "tile")
+      .attr("x", function(d, j) {return x(j % 256); }) // column number
+      .attr("y", function(d, j) {return y(Math.floor(j/256)); }) // row number
+      .attr("width", x(1) - x(0))
+      .attr("height", y(1) - y(0))
+      .style("fill", function(d) { return z(d); });
+
+  // Add a y-axis 
+  //svg.append("g")
+  //    .attr("class", "y axis")
+  //    .call(d3.svg.axis().scale(y).orient("left"))
+    
+  // Add an x-axis
+  //svg.append("g")
+  //    .attr("class", "x axis")
+  //    .attr("transform", "translate(0," + height + ")")
+  //    .call(d3.svg.axis().scale(x).orient("bottom"))
+    
+});
+
+</script>
+</body>
+</html>
