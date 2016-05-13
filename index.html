@@ -25,6 +25,7 @@ body {
 
 </style>
 <script src="./d3/d3.js"></script>
+<script src="https://d3js.org/d3-scale.v0.7.min.js"></script>
 </head>
 <body>
 <script>
@@ -35,7 +36,7 @@ var margin = {top: 20, right: 60, bottom: 20, left: 40},
 
 var x = d3.scale.linear().range([0, width]),
     y = d3.scale.linear().range([0, height]),
-    z = d3.scale.linear().range(["white", "steelblue"]);
+    z = d3_scale.scaleViridis();
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
