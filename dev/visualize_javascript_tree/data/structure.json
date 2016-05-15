@@ -1,4 +1,5 @@
-me": "petal length (cm) > 2.45000004768",
+{
+  "name": "petal length (cm) > 2.45000004768",
   "children": [
     {
       "name": "petal width (cm) > 1.75",
@@ -32,4 +33,3 @@ me": "petal length (cm) > 2.45000004768",
     }
   ]
 }
-
