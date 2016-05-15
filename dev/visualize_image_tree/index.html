@@ -33,33 +33,6 @@
  
 <script>
 
-var treeData = [
-  {
-    "name": "Top Level",
-    "parent": "null",
-    "children": [
-      {
-        "name": "Level 2: A",
-        "parent": "Top Level",
-        "children": [
-          {
-            "name": "Son of A",
-            "parent": "Level 2: A"
-          },
-          {
-            "name": "Daughter of A",
-            "parent": "Level 2: A"
-          }
-        ]
-      },
-      {
-        "name": "Level 2: B",
-        "parent": "Top Level"
-      }
-    ]
-  }
-];
-
 // ************** Generate the tree diagram  *****************
 var margin = {top: 20, right: 120, bottom: 20, left: 120},
  width = 960 - margin.right - margin.left,
@@ -83,7 +56,7 @@ var svg = d3.select("body").append("svg")
   
 //update(root);
 
-d3.json("./data/treeData.json", function(error, treeData) {
+d3.json("sample_json_from_sklearn.json", function(error, treeData) {
   root = treeData[0];
   update(root);
 });
