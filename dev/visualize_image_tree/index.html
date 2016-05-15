@@ -56,7 +56,7 @@ var svg = d3.select("body").append("svg")
   
 //update(root);
 
-d3.json("sample_json_from_sklearn.json", function(error, treeData) {
+d3.json("data/sample_json_from_sklearn.json", function(error, treeData) {
   root = treeData[0];
   update(root);
 });
