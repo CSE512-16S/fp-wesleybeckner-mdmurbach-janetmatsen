@@ -98,9 +98,21 @@ function update(source) {
    .data(links, function(d) { return d.target.id; });
 
   // Enter the links.
-  link.enter().insert("path", "g")
+  link.enter().insert("line", "g")
    .attr("class", "link")
-   .attr("d", diagonal);
+    // make straight lines: http://www.harrysurden.com/wordpress/archives/581
+   .attr("x1", function (d){
+       return d.source.x;
+   })
+   .attr("y1", function (d){
+       return d.source.y;
+   })
+   .attr("x2", function (d){
+       return d.target.x;
+   })
+   .attr("y2", function (d){
+       return d.target.y;
+   });
 
 }
 
