@@ -70,11 +70,15 @@ function update(source) {
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 20; });
 
-  // Declare the nodesâ€¦
+  // Declare the nodes:
+  // declare the variable / function node so that when we call it later it 
+  // will know to select the appropriate object (a node) with the appropriate .id.
   var node = svg.selectAll("g.node")
    .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
   // Enter the nodes.
+  // assigns the variable / function nodeEnter to the action of appending
+  // a node to a particular position
   var nodeEnter = node.enter().append("g")
    .attr("class", "node")
    .attr("transform", function(d) { 
@@ -94,7 +98,10 @@ function update(source) {
 //   .text(function(d) { return d.name; })
 //   .style("fill-opacity", 1);
 
-  // Declare the linksâ€¦
+  // Declare the links
+  // declare the link variable / function and tell it to make a link based on 
+  // all the links that have unique target id’s
+  // we only want to draw links between a node and it’s parent.
   var link = svg.selectAll("path.link")
    .data(links, function(d) { return d.target.id; });
 
