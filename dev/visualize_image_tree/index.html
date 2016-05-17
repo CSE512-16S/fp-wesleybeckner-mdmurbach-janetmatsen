@@ -9,8 +9,10 @@
     <style>
 
  .node circle {
-   fill: #6D7B8D;
-   stroke: #6D7B8D;
+   //fill: #6D7B8D;
+   //stroke: #6D7B8D;
+   fill: #f1f1f1;
+   stroke: #f1f1f1;
    stroke-width: 1px;
  }
 
@@ -30,6 +32,8 @@
 
 <!-- load the d3.js library --> 
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<!-- load the helper .js files --> 
+<script type="text/javascript"src="tree_styling.js"></script>
  
 <script>
 
@@ -87,7 +91,8 @@ function update(source) {
   nodeEnter.append("circle")
    .attr("r", 3)
    // #fb0 expands to #ffbb00, so #fff --> #ffffff (html shorthand)
-   .style("fill", "#fff");
+   //.style("fill", "#fff");
+   .style("fill", function(d) { return color_for_node(d.name); });
 
 //  nodeEnter.append("text")
 //   .attr("x", function(d) { 

@@ -35,3 +35,6 @@ How to color the nodes?
     - Write a function that gets Po2_flat out of Po2_flat > 0.021143555641174316
     - Write a function that converts Po2_flat to a color
     - Write a function that assigns color based on Po2_flat > 0.021143555641174316
+- function to extract Po2_flat:
+    - "Po2_flat > 0.021143555641174316".match(/^[a-z0-9_]+\s>/gi)[0] --> "Po2_flat >"
+    - "Po2_flat > 0.021143555641174316".match(/^[a-z0-9_]+/gi)[0] -->  "Po2_flat"
