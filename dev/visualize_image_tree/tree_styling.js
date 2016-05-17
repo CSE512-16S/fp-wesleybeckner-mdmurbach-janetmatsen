@@ -25,7 +25,7 @@ function feature_to_color(feature_name) {
     matching_array['Po2_flat'] = '#1F77B4'
     matching_array['Ph2_flat'] = '#FF7F0E'
     matching_array['Ht2_flat'] = '#D62728'
-    matching_array['???'] = '#FF7F0E'   // what is the last feature? 
+    matching_array['???'] = '#2CA02C'   // what is the last feature? 
 
     return matching_array[feature_name]
 }
