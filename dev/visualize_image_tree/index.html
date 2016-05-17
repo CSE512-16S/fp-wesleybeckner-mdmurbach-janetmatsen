@@ -12,8 +12,8 @@
    //fill: #6D7B8D;
    //stroke: #6D7B8D;
    fill: #f1f1f1;
-   stroke: #f1f1f1;
-   stroke-width: 1px;
+   //stroke: #f1f1f1;
+   //stroke-width: 1px;
  }
 
  .node text { font: 12px sans-serif; }
@@ -91,7 +91,6 @@ function update(source) {
   nodeEnter.append("circle")
    .attr("r", 3)
    // #fb0 expands to #ffbb00, so #fff --> #ffffff (html shorthand)
-   //.style("fill", "#fff");
    .style("fill", function(d) { return color_for_node(d.name); });
 
 //  nodeEnter.append("text")
