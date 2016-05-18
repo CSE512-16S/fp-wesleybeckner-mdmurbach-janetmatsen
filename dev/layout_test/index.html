@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 10px sans-serif;
+  width: 100%;
+  display: block;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.tile {
+  shape-rendering: crispEdges;
+}
+
+.cell-hover {
+        stroke: #F00;
+        stroke-width:1px;   
+      }
+
+.title {
+    font-size: 14px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#inputs {
+    width: 80%;
+    margin: 0 auto; 
+    white-space: nowrap; <!-- keep everything on one line -->
+    vertical-align: top;
+    overflow: hidden;
+    text-align: center;
+}
+
+#tree {
+    width: 55%;
+    float: left;
+    text-align: center;
+}
+
+#output {
+    width: 40%;
+    float: right;
+    text-align: center;
+}
+
+.node circle {
+    fill: #6D7B8D;
+    stroke: #6D7B8D;
+    //fill: #f1f1f1;
+    //stroke: #f1f1f1;
+    //stroke-width: 1px;
+}
+
+.node text { font: 12px sans-serif; }
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
+}
+
+</style>
+<script src="./d3/d3.js"></script>
+<script src="https://d3js.org/d3-scale.v0.7.min.js"></script>
+<script type="text/javascript"src="tree_styling.js"></script>
+</head>
+<body>
+<div id="inputs"><h1>Inputs</h1></div>
+<div id="tree"><h1>Tree</h1></div>
+<div id="output"><h1>Outputs</h1></div>
+<script>
+
+// ************** Generate the inputs  *****************
+    
+image_show("data/Height.txt", "Height");
+image_show("data/Potential.txt", "Potential");
+image_show("data/Phase.txt", "Phase");
+image_show("data/Amplitude.txt", "Amplitude");
+
+// filename = string of .tsv file 
+// title = string of title (placed above resulting image)
+var d;
+function image_show(filename, title) {
+    outerWidth = window.innerWidth/5
+
+    var margin = {top: 20, right: 40, bottom: 20, left: 40},
+        width = outerWidth - margin.left - margin.right,
+        height = width //outerWidth - margin.top - margin.bottom;
+
+    var x = d3.scale.linear().range([0, width]),
+        y = d3.scale.linear().range([0, height]),
+        z = d3_scale.scaleViridis();
+
+    var svg = d3.select("div#inputs").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Read in Ht.txt and plot a pixel by pixel image
+    // http://stackoverflow.com/questions/13870265/read-csv-tsv-with-no-header-line-in-d3
+    d3.text(filename, function(text) {
+      var full = d3.tsv.parseRows(text).map(function(row, i) {
+        return row.map(function(value) {
+          return +value;
+        });
+      });
+      
+      var data = [];
+      
+      subset = full.slice(0,125);
+      subset.forEach(function(d, i) {data[i] = d.slice(0,125)})
+      
+      N = data[0].length; // Number of columns
+      M = data.length; // Number of rows
+      
+      // Compute the x and y scale domains.
+      x.domain([0, N-1]);
+      y.domain([0, M-1]);
+      
+      // Flatten the matrix into a single array so we have a data
+      // object for each pixel
+      flatten = d3.merge(data);
+      
+      z.domain(d3.extent(flatten, function(d) {return d}));
+
+      // Display the tiles for each non-zero bucket.
+      svg.selectAll(".tile")
+          .data(flatten).enter().append("rect")
+          .attr("class", "tile")
+          .attr("x", function(d, j) {return x((j % N)); }) // column number
+          .attr("y", function(d, j) {return y(Math.floor(j/N)); }) // row number
+          .attr("width", x(1) - x(0))
+          .attr("height", y(1) - y(0))
+          .style("fill", function(d) { return z(d); })
+          .on("mouseover", function(d){
+               d3.select(this).classed("cell-hover",true);
+                })
+          .on("mouseout", function(){
+               d3.select(this).classed("cell-hover",false)
+               });
+               
+      svg.append("text")
+        .attr("class", "title")
+        .attr("x", width/2)
+        .attr("y", -margin.top/2)
+        .attr("text-anchor", "middle")
+        .text(title); 
+    });
+};
+
+// ************** Generate the output  *****************
+
+   generate_output();
+    
+function generate_output() {
+    outerWidth = window.innerWidth/4
+
+    var margin = {top: 40, right: 60, bottom: 20, left: 40},
+        width = outerWidth - margin.left - margin.right,
+        height = width //outerWidth - margin.top - margin.bottom;
+
+    var x = d3.scale.linear().range([0, width]),
+        y = d3.scale.linear().range([0, height]),
+        z = d3_scale.scaleViridis();
+        
+    var svg = d3.select("div#output").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Read in Ht.txt and plot a pixel by pixel image
+    // http://stackoverflow.com/questions/13870265/read-csv-tsv-with-no-header-line-in-d3
+
+    d3.text("data/Photoluminescence.txt", function(text) {
+      var full = d3.tsv.parseRows(text).map(function(row) {
+        return row.map(function(value) {
+          return +value;
+        });
+      });
+      
+      var data = [];
+      
+      subset = full.slice(0,125);
+      subset.forEach(function(d, i) {data[i] = d.slice(0,125)})
+
+      N = data[0].length; // Number of columns
+      M = data.length; // Number of rows
+      
+      // Compute the x and y scale domains.
+      x.domain([0, N-1]);
+      y.domain([0, M-1]);
+      
+      // Flatten the matrix into a single array so we have a data
+      // object for each pixel
+      flatten = d3.merge(data);
+      
+      z.domain(d3.extent(flatten, function(d) {return d}));
+
+      // Display the tiles for each non-zero bucket.
+      svg.selectAll(".tile")
+          .data(flatten).enter().append("rect")
+          .attr("class", "tile")
+          .attr("x", function(d, j) {return x((j % N)); }) // column number
+          .attr("y", function(d, j) {return y(Math.floor(j/N)); }) // row number
+          .attr("width", x(1) - x(0))
+          .attr("height", y(1) - y(0))
+          .style("fill", function(d) { return z(d); });
+        
+      svg.append("text")
+        .attr("class", "title")
+        .attr("x", width/2)
+        .attr("y", -margin.top/2)
+        .attr("text-anchor", "middle")
+        .text("Photoluminescence"); 
+    });
+};
+
+// ************** Generate the tree diagram  *****************
+var margin = {top: 20, right: 20, bottom: 20, left: 20},
+ width = .55*window.innerWidth - margin.right - margin.left,
+ height = window.innerHeight/2 - margin.top - margin.bottom;
+ 
+var i = 0;
+
+var tree = d3.layout.tree()
+ .size([width, height]);
+
+var diagonal = d3.svg.diagonal()
+ .projection(function(d) { return [d.x, d.y]; });
+
+var svg = d3.select("div#tree").append("svg")
+ .attr("width", width + margin.right + margin.left)
+ .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+ .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+//root = treeData[0];
+  
+//update(root);
+
+d3.json("data/sample_json_from_sklearn.json", function(error, treeData) {
+  root = treeData[0];
+  update(root);
+});
+
+function update(source) {
+
+  // Compute the new tree layout.
+  var nodes = tree.nodes(root).reverse(),
+   links = tree.links(nodes);
+
+  // Normalize for fixed-depth.
+  nodes.forEach(function(d) {d.y = d.depth * 20; });
+
+  // Declare the nodes:
+  // declare the variable / function node so that when we call it later it 
+  // will know to select the appropriate object (a node) with the appropriate .id.
+  var node = svg.selectAll("g.node")
+   .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+  // Enter the nodes.
+  // assigns the variable / function nodeEnter to the action of appending
+  // a node to a particular position
+  var nodeEnter = node.enter().append("g")
+   .attr("class", "node")
+   .attr("transform", function(d) { 
+    return "translate(" + d.x + "," + d.y + ")"; });
+
+  nodeEnter.append("circle")
+   .attr("r", 3)
+   // #fb0 expands to #ffbb00, so #fff --> #ffffff (html shorthand)
+   .style("fill", function(d) { return color_for_node(d.name); });
+
+//  nodeEnter.append("text")
+//   .attr("x", function(d) { 
+//    return d.children || d._children ? -13 : 13; })
+//   .attr("dy", ".35em")
+//   .attr("text-anchor", function(d) { 
+//    return d.children || d._children ? "end" : "start"; })
+//   .text(function(d) { return d.name; })
+//   .style("fill-opacity", 1);
+
+  // Declare the links
+  // declare the link variable / function and tell it to make a link based on 
+  // all the links that have unique target id’s
+  // we only want to draw links between a node and it’s parent.
+  var link = svg.selectAll("path.link")
+   .data(links, function(d) { return d.target.id; });
+
+  // Enter the links.
+  link.enter().insert("line", "g")
+   .attr("class", "link")
+    // make straight lines: http://www.harrysurden.com/wordpress/archives/581
+   .attr("x1", function (d){
+       return d.source.x;
+   })
+   .attr("y1", function (d){
+       return d.source.y;
+   })
+   .attr("x2", function (d){
+       return d.target.x;
+   })
+   .attr("y2", function (d){
+       return d.target.y;
+   });
+
+}
+</script>
+</body>
+</html>
