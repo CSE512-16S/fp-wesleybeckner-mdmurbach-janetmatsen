@@ -20,7 +20,7 @@ body {
 
 .cell-hover {
         stroke: #F00;
-        stroke-width:1px;   
+        stroke-width:2.5px;   
       }
 
 .title {
@@ -72,9 +72,10 @@ body {
 }
 
 </style>
-<script src="./d3/d3.js"></script>
-<script src="https://d3js.org/d3-scale.v0.7.min.js"></script>
-<script type="text/javascript"src="tree_styling.js"></script>
+<script type="text/javascript" src="./d3/d3.js"></script>
+<script type="text/javascript" src="./scripts/d3-scale.v0.7.min.js"></script>
+<script type="text/javascript" src="tree_styling.js"></script>
+<script type="text/javascript" src="./scripts/generate_images.js"></script>
 </head>
 <body>
 <div id="inputs"><h1>Inputs</h1></div>
@@ -83,151 +84,16 @@ body {
 <script>
 
 // ************** Generate the inputs  *****************
-    
-image_show("data/Height.txt", "Height");
-image_show("data/Potential.txt", "Potential");
-image_show("data/Phase.txt", "Phase");
-image_show("data/Amplitude.txt", "Amplitude");
 
-// filename = string of .tsv file 
-// title = string of title (placed above resulting image)
-var d;
-function image_show(filename, title) {
-    outerWidth = window.innerWidth/5
+outerWidth_input = window.innerWidth/5;
+outerHeight_input = outerWidth_input; // make a square image
 
-    var margin = {top: 20, right: 40, bottom: 20, left: 40},
-        width = outerWidth - margin.left - margin.right,
-        height = width //outerWidth - margin.top - margin.bottom;
-
-    var x = d3.scale.linear().range([0, width]),
-        y = d3.scale.linear().range([0, height]),
-        z = d3_scale.scaleViridis();
-
-    var svg = d3.select("div#inputs").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    // Read in Ht.txt and plot a pixel by pixel image
-    // http://stackoverflow.com/questions/13870265/read-csv-tsv-with-no-header-line-in-d3
-    d3.text(filename, function(text) {
-      var full = d3.tsv.parseRows(text).map(function(row, i) {
-        return row.map(function(value) {
-          return +value;
-        });
-      });
-      
-      var data = [];
-      
-      subset = full.slice(0,125);
-      subset.forEach(function(d, i) {data[i] = d.slice(0,125)})
-      
-      N = data[0].length; // Number of columns
-      M = data.length; // Number of rows
-      
-      // Compute the x and y scale domains.
-      x.domain([0, N-1]);
-      y.domain([0, M-1]);
-      
-      // Flatten the matrix into a single array so we have a data
-      // object for each pixel
-      flatten = d3.merge(data);
-      
-      z.domain(d3.extent(flatten, function(d) {return d}));
-
-      // Display the tiles for each non-zero bucket.
-      svg.selectAll(".tile")
-          .data(flatten).enter().append("rect")
-          .attr("class", "tile")
-          .attr("x", function(d, j) {return x((j % N)); }) // column number
-          .attr("y", function(d, j) {return y(Math.floor(j/N)); }) // row number
-          .attr("width", x(1) - x(0))
-          .attr("height", y(1) - y(0))
-          .style("fill", function(d) { return z(d); })
-          .on("mouseover", function(d){
-               d3.select(this).classed("cell-hover",true);
-                })
-          .on("mouseout", function(){
-               d3.select(this).classed("cell-hover",false)
-               });
-               
-      svg.append("text")
-        .attr("class", "title")
-        .attr("x", width/2)
-        .attr("y", -margin.top/2)
-        .attr("text-anchor", "middle")
-        .text(title); 
-    });
-};
-
-// ************** Generate the output  *****************
-
-   generate_output();
-    
-function generate_output() {
-    outerWidth = window.innerWidth/4
-
-    var margin = {top: 40, right: 60, bottom: 20, left: 40},
-        width = outerWidth - margin.left - margin.right,
-        height = width //outerWidth - margin.top - margin.bottom;
-
-    var x = d3.scale.linear().range([0, width]),
-        y = d3.scale.linear().range([0, height]),
-        z = d3_scale.scaleViridis();
-        
-    var svg = d3.select("div#output").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    // Read in Ht.txt and plot a pixel by pixel image
-    // http://stackoverflow.com/questions/13870265/read-csv-tsv-with-no-header-line-in-d3
-
-    d3.text("data/Photoluminescence.txt", function(text) {
-      var full = d3.tsv.parseRows(text).map(function(row) {
-        return row.map(function(value) {
-          return +value;
-        });
-      });
-      
-      var data = [];
-      
-      subset = full.slice(0,125);
-      subset.forEach(function(d, i) {data[i] = d.slice(0,125)})
-
-      N = data[0].length; // Number of columns
-      M = data.length; // Number of rows
-      
-      // Compute the x and y scale domains.
-      x.domain([0, N-1]);
-      y.domain([0, M-1]);
-      
-      // Flatten the matrix into a single array so we have a data
-      // object for each pixel
-      flatten = d3.merge(data);
-      
-      z.domain(d3.extent(flatten, function(d) {return d}));
-
-      // Display the tiles for each non-zero bucket.
-      svg.selectAll(".tile")
-          .data(flatten).enter().append("rect")
-          .attr("class", "tile")
-          .attr("x", function(d, j) {return x((j % N)); }) // column number
-          .attr("y", function(d, j) {return y(Math.floor(j/N)); }) // row number
-          .attr("width", x(1) - x(0))
-          .attr("height", y(1) - y(0))
-          .style("fill", function(d) { return z(d); });
-        
-      svg.append("text")
-        .attr("class", "title")
-        .attr("x", width/2)
-        .attr("y", -margin.top/2)
-        .attr("text-anchor", "middle")
-        .text("Photoluminescence"); 
-    });
-};
+// Make the input and output images
+show_image("data/Height.txt", outerWidth_input, outerHeight_input, "Height", "#inputs");
+show_image("data/Height.txt", outerWidth_input, outerHeight_input, "Potential", "#inputs");
+show_image("data/Phase.txt", outerWidth_input, outerHeight_input, "Phase", "#inputs");
+show_image("data/Amplitude.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
+show_image("data/Photoluminescence.txt", outerWidth_input, outerHeight_input, "Photoluminescence", "#output");
 
 // ************** Generate the tree diagram  *****************
 var margin = {top: 20, right: 20, bottom: 20, left: 20},
