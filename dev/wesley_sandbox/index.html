@@ -60,7 +60,7 @@ var svg = d3.select("body").append("svg")
   
 //update(root);
 
-d3.json("data/sample_json_from_sklearn.json", function(error, treeData) {
+d3.json("../../data/sample_json_from_sklearn.json", function(error, treeData) {
   root = treeData[0];
   update(root);
 });
@@ -84,14 +84,34 @@ function update(source) {
   // assigns the variable / function nodeEnter to the action of appending
   // a node to a particular position
   var nodeEnter = node.enter().append("g")
-   .attr("class", "node")
-   .attr("transform", function(d) { 
-    return "translate(" + d.x + "," + d.y + ")"; });
+    .attr("class", "node")
+    .attr("transform", function(d) { 
+     return "translate(" + d.x + "," + d.y + ")"; })
+    .on("mouseover", function(d) {
+     var g = d3.select(this); //the node
+     // the class is used to remove the additional text later
+     var info = g.append('text')
+    .classed('info', true)
+    .attr('x', 20)
+    .attr('y', 10)
+    .text(function(d) { return d.name});
+    var makebig = g.append("circle")
+    .classed('size', true)
+    .transition().attr("r", 6).duration(1000)
+    // #fb0 expands to #ffbb00, so #fff --> #ffffff (html shorthand)
+    .style("fill", function(d) { return color_for_node(d.name); })
+    })
+    .on("mouseout", function() {
+    //remove the info text on mouse out.
+    d3.select(this).select('text.info').remove();
+    d3.select(this).select('circle.size').remove();
+    });
 
   nodeEnter.append("circle")
    .attr("r", 3)
    // #fb0 expands to #ffbb00, so #fff --> #ffffff (html shorthand)
-   .style("fill", function(d) { return color_for_node(d.name); });
+   .style("fill", function(d) { return color_for_node(d.name); })
+   .append("svg:circle").append("svg:title").text(function(d) { return d.name; });
 
 //  nodeEnter.append("text")
 //   .attr("x", function(d) { 
