@@ -65,7 +65,7 @@ d3.json("data/sample_json_from_sklearn.json", function(error, treeData) {
   update(root);
 });
 
-NODE_OPACITY = 0.3
+OPACITY = 0.3
 
 function update(source) {
 
@@ -92,25 +92,43 @@ function update(source) {
 
   // Plot circles, colored by the decision being made
   nodeEnter.append("circle")
-   .attr("r", 3)
-   .attr("opacity", NODE_OPACITY)
-   .style("fill", function(d) { return color_for_node(d.name); });
+    .classed('node', true)  // assigning it class 'node'
+    .attr("r", 3)
+    .style("opacity", OPACITY)
+    .style("fill", function(d) { return color_for_node(d.name); });
 
   // Hover text  
   // http://stackoverflow.com/questions/19297808/how-to-display-name-of-node-when-mouse-over-on-node-in-collapsible-tree-graph
   nodeEnter.on("mouseover", function(d) {
+    console.log(d)
     var g = d3.select(this); //the node
     // the class is used to remove the additional text later
     var info = g.append('text')
-      .classed('info', true)
+      .classed('info', true)  // assigning it class 'info'
       .attr('x', 20)  // 20 pixels to the right
       .attr('y', 10)  // 10 pixels under the circle
       .text(function(d) { return d.name});
+    var hoverCircle = g.append('circle')
+      .classed('info', true)
+      .attr('r', 10)
+      .style("fill", function(d) { return color_for_node(d.name); })
+      .style('opacity', 0);
+    // make the circle darker 
+    //g.style('opacity', 0)
+    
+
+    // show a circle on top of the faded background one
+//    var mouseNode = g.append('circle')
+//      .classed('hoverNode', true)
+//      .atttr('r', 5)
+//      .style('opacity', 0)
+//      .style('fill', function(d) { return color_for_node(d.name); });
     });
 
   nodeEnter.on("mouseout", function() {
-    //remove the info text on mouse out.
+    //remove the info text on mouse out by removing the class for that node.
     d3.select(this).select('text.info').remove();
+    // set the opactiy back to the default
     });
 
   // Declare the links
