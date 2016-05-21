@@ -95,18 +95,18 @@ function update(source) {
   var hoverTextOn = function() {
     // http://stackoverflow.com/questions/19297808/how-to-display-name-of-node-when-mouse-over-on-node-in-collapsible-tree-graph
     console.log("mouse is over")
-    var circle = d3.select(this);
-	  circle.transition().duration(500)
+    var hoverCircle = d3.select(this);
+	  hoverCircle.transition().duration(500)
 	    .attr("opacity", 1 )
-		.attr("r", circle.attr("r") * 1 + 10 );
+		.attr("r", hoverCircle.attr("r") * 1 + 10 );
     };
 
   // Function to remove text when you move the cursor away
   var hoverTextOff = function() {
     console.log("mouse left")
     //remove the info text on mouse out.
-    var circle = d3.select(this);
-      circle.attr("r", 3);
+    var hoverCircle = d3.select(this);
+      hoverCircle.attr("r", 5); // leave them bigger for fun
     };
 
   // Plot circles, colored by the decision being made
