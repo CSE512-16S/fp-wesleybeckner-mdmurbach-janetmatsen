@@ -88,19 +88,28 @@ function update(source) {
    .attr("transform", function(d) { 
     return "translate(" + d.x + "," + d.y + ")"; });
 
+  // Plot circles, colored by the decision being made
   nodeEnter.append("circle")
    .attr("r", 3)
-   // #fb0 expands to #ffbb00, so #fff --> #ffffff (html shorthand)
    .style("fill", function(d) { return color_for_node(d.name); });
 
-//  nodeEnter.append("text")
-//   .attr("x", function(d) { 
-//    return d.children || d._children ? -13 : 13; })
-//   .attr("dy", ".35em")
-//   .attr("text-anchor", function(d) { 
-//    return d.children || d._children ? "end" : "start"; })
-//   .text(function(d) { return d.name; })
-//   .style("fill-opacity", 1);
+  // Hover text  
+  // http://stackoverflow.com/questions/19297808/how-to-display-name-of-node-when-mouse-over-on-node-in-collapsible-tree-graph
+  nodeEnter.on("mouseover", function(d) {
+     var g = d3.select(this); //the node
+     // the class is used to remove the additional text later
+     var info = g.append('text')
+       .classed('info', true)
+       .attr('x', 20)  // 20 pixels to the right
+       .attr('y', 10)  // 10 pixels under the circle
+       .text(function(d) { return d.name});
+    });
+
+  nodeEnter.on("mouseout", function() {
+    //remove the info text on mouse out.
+    d3.select(this).select('text.info').remove();
+    d3.select(this).select('circle.size').remove();
+    });
 
   // Declare the links
   // declare the link variable / function and tell it to make a link based on 
