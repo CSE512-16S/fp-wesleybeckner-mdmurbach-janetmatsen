@@ -90,28 +90,41 @@ function update(source) {
    .attr("transform", function(d) { 
     return "translate(" + d.x + "," + d.y + ")"; });
 
+  // ?? TODO: test whether this function has to be defined before use. 
+  // Hover text  
+  var hoverTextOn = function() {
+    // http://stackoverflow.com/questions/19297808/how-to-display-name-of-node-when-mouse-over-on-node-in-collapsible-tree-graph
+    console.log("mouse is over")
+    var circle = d3.select(this);
+				circle.transition().duration(500)
+					.attr("r", circle.attr("r") * 1 + 10 );
+//    var selected_circle = d3.select(this); //the node
+//    console.log(selected_circle);
+//    // the class is used to remove the additional text later
+//    var label = selected_circle.append('text')
+//    //var info = g.append('text')
+//    //  .classed('info', true)
+//      .attr('x', 20)  // 20 pixels to the right
+//      .attr('y', 10)  // 10 pixels under the circle
+//      //.text(function(d) { return d.name});
+//      .text(function(d) { return 'abc'});
+    };
+
+  // Function to remove text when you move the cursor away
+  var hoverTextOff = function() {
+    console.log("mouse left")
+    //remove the info text on mouse out.
+    d3.select(this).select('text.info').remove();
+    };
+
   // Plot circles, colored by the decision being made
   nodeEnter.append("circle")
    .attr("r", 3)
    .attr("opacity", NODE_OPACITY)
-   .style("fill", function(d) { return color_for_node(d.name); });
+   .style("fill", function(d) { return color_for_node(d.name); })
+   .on("mouseover", hoverTextOn)
+   .on("mouseout", hoverTextOff);
 
-  // Hover text  
-  // http://stackoverflow.com/questions/19297808/how-to-display-name-of-node-when-mouse-over-on-node-in-collapsible-tree-graph
-  nodeEnter.on("mouseover", function(d) {
-    var g = d3.select(this); //the node
-    // the class is used to remove the additional text later
-    var info = g.append('text')
-      .classed('info', true)
-      .attr('x', 20)  // 20 pixels to the right
-      .attr('y', 10)  // 10 pixels under the circle
-      .text(function(d) { return d.name});
-    });
-
-  nodeEnter.on("mouseout", function() {
-    //remove the info text on mouse out.
-    d3.select(this).select('text.info').remove();
-    });
 
   // Declare the links
   // declare the link variable / function and tell it to make a link based on 
