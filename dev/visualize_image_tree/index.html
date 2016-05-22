@@ -77,7 +77,7 @@ function update(source) {
   nodes.forEach(function(d) { d.y = d.depth * 20; });
 
   // Declare the nodes:
-  // declare the variable / function node so that when we call it later it 
+  // Declare the variable / function node so that when we call it later it 
   // will know to select the appropriate object (a node) with the appropriate .id.
   var node = svg.selectAll("g.node")
    .data(nodes, function(d) { return d.id || (d.id = ++i); });
@@ -94,12 +94,10 @@ function update(source) {
       .text(function(d) {return d.name;})
     ;}
 
-
   var hoverLabelOff = function() {
     console.log("hover off");
     d3.select(this).select('text.info').remove()
     ;}
-
 
   // Enter the nodes.
   // assigns the variable / function nodeEnter to the action of appending
@@ -112,11 +110,27 @@ function update(source) {
     .on("mouseover", hoverLabelOn )
     ;
 
+  var hoverCircleOn = function() {
+    // http://stackoverflow.com/questions/19297808/how-to-display-name-of-node-when-mouse-over-on-node-in-collapsible-tree-graph
+    console.log("mouse is over")
+    var hoverCircle = d3.select(this);
+	  hoverCircle.transition().duration(500)
+	    .attr("opacity", 1 )
+		.attr("r", hoverCircle.attr("r") * 1 + 10 );
+    }
+ 
+  var hoverCircleOff = function() {
+    var hoverCircle = d3.select(this);
+      hoverCircle.attr("r", 5); // leave them bigger for fun
+  }
+
   // Plot circles, colored by the decision being made
   nodeEnter.append("circle")
     .attr("r", 3)
     .attr("opacity", NODE_OPACITY)
     .style("fill", function(d) { return color_for_node(d.name); })
+    .on("mouseover", hoverCircleOn )
+    .on("mouseout", hoverCircleOff )
     ;
 
   // Declare the links
