@@ -83,7 +83,7 @@ function update(source) {
    .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
 
-  var hoverNodeOff = function() {
+  var hoverLabelOff = function() {
     console.log("hover off");
     d3.select(this).select('text.info').remove()
     ;}
@@ -91,7 +91,7 @@ function update(source) {
   // http://stackoverflow.com/questions/19297808/how-to-display-name-of-node-when-mouse-over-on-node-in-collapsible-tree-graph
   // You have to apply this to the node.enter().append("g") thing, 
   // *not* the circle made by nodeEnter.append("circle").  (need to understand better)
-  var hoverNodeOn = function() {
+  var hoverLabelOn = function() {
     console.log("hover on");
     d3.select(this).append("text")
       .classed('info', true)
@@ -107,8 +107,8 @@ function update(source) {
     .attr("class", "node")
     .attr("transform", function(d) { 
       return "translate(" + d.x + "," + d.y + ")"; })
-    .on("mouseout", hoverNodeOff )
-    .on("mouseover", hoverNodeOn )
+    .on("mouseout", hoverLabelOff )
+    .on("mouseover", hoverLabelOn )
     ;
 
   // Plot circles, colored by the decision being made
