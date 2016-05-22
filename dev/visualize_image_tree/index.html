@@ -63,6 +63,9 @@ d3.json("data/sample_json_from_sklearn.json", function(error, treeData) {
   update(root);
 });
 
+// Global Variables:
+NODE_OPACITY = 0.3
+
 // ?? Is this continually being called?  
 function update(source) {
 
@@ -111,6 +114,7 @@ function update(source) {
   // Plot circles, colored by the decision being made
   nodeEnter.append("circle")
     .attr("r", 3)
+    .attr("opacity", NODE_OPACITY)
     .style("fill", function(d) { return color_for_node(d.name); })
     ;
 
