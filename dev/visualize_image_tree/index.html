@@ -80,6 +80,15 @@ function update(source) {
   var node = svg.selectAll("g.node")
    .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
+
+  var hoverNodeOn = function() {
+    d3.select(this).append("text")
+      .text('abc')
+      .attr('x', 20)  // 20 pixels to the right
+      .attr('y', 10)  // 10 pixels under the circle
+      .text('abc')
+    ;}
+
   // Enter the nodes.
   // assigns the variable / function nodeEnter to the action of appending
   // a node to a particular position
@@ -87,14 +96,8 @@ function update(source) {
     .attr("class", "node")
     .attr("transform", function(d) { 
       return "translate(" + d.x + "," + d.y + ")"; })
-    .on("mouseover", function(d) {
-      d3.select(this).append("text")
-        .text('abc')
-        .attr('x', 20)  // 20 pixels to the right
-        .attr('y', 10)  // 10 pixels under the circle
-        .text('abc');})
-
-      console.log('hover on');
+    .on("mouseover", hoverNodeOn )
+    ;
 
 //  // Hover text  
 //  // http://stackoverflow.com/questions/19297808/how-to-display-name-of-node-when-mouse-over-on-node-in-collapsible-tree-graph
