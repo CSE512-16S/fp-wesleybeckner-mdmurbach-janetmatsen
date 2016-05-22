@@ -81,13 +81,24 @@ function update(source) {
    .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
 
+  var hoverNodeOff = function() {
+    console.log("hover off");
+    d3.select(this).select('text.info').remove()
+    ;}
+
+  // http://stackoverflow.com/questions/19297808/how-to-display-name-of-node-when-mouse-over-on-node-in-collapsible-tree-graph
+  // You have to apply this to the node.enter().append("g") thing, 
+  // *not* the circle made by nodeEnter.append("circle").  (need to understand better)
   var hoverNodeOn = function() {
+    console.log("hover on");
     d3.select(this).append("text")
-      .text('abc')
+      .classed('info', true)
       .attr('x', 20)  // 20 pixels to the right
       .attr('y', 10)  // 10 pixels under the circle
       .text(function(d) {return d.name;})
     ;}
+
+
 
   // Enter the nodes.
   // assigns the variable / function nodeEnter to the action of appending
@@ -96,45 +107,15 @@ function update(source) {
     .attr("class", "node")
     .attr("transform", function(d) { 
       return "translate(" + d.x + "," + d.y + ")"; })
+    .on("mouseout", hoverNodeOff )
     .on("mouseover", hoverNodeOn )
     ;
-
-//  // Hover text  
-//  // http://stackoverflow.com/questions/19297808/how-to-display-name-of-node-when-mouse-over-on-node-in-collapsible-tree-graph
-//  var hoverNodeOn = function  (d) {
-//    console.log('hover on')
-//    var g = d3.select(this); //the node
-//    var info = g.append('text')
-//      .classed('info', true)
-//      .attr('x', 20)  // 20 pixels to the right
-//      .attr('y', 10)  // 10 pixels under the circle
-//      .text('abc')
-//      //.text(function(d) {console.log(d.name); return d.name});
-//    }
-//  nodeEnter.on("mouseover", function(d) {
-//     var g = d3.select(this); //the node
-//     // the class is used to remove the additional text later
-//     var info = g.append('text')
-//       .classed('info', true)
-//       .attr('x', 20)  // 20 pixels to the right
-//       .attr('y', 10)  // 10 pixels under the circle
-//       .text(function(d) { return d.name});
-//    });
 
   // Plot circles, colored by the decision being made
   nodeEnter.append("circle")
     .attr("r", 3)
     .style("fill", function(d) { return color_for_node(d.name); })
-
-        ;
-
-
-
-  nodeEnter.on("mouseout", function() {
-    //remove the info text on mouse out.
-    //d3.select(this).select('text.info').remove();
-    d3.select(this).select('circle.size').remove();
-    });
+    ;
 
   // Declare the links
   // declare the link variable / function and tell it to make a link based on 
