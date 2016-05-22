@@ -42,6 +42,7 @@ var margin = {top: 20, right: 120, bottom: 20, left: 120},
  width = 1200 - margin.right - margin.left,
  height = 1000 - margin.top - margin.bottom;
  
+// Variable i get used in `var_node` below. 
 var i = 0;
 
 var tree = d3.layout.tree()
@@ -56,15 +57,13 @@ var svg = d3.select("body").append("svg")
   .append("g")
  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-//root = treeData[0];
-  
-//update(root);
-
+// Load our .json data exported from scikit-learn
 d3.json("data/sample_json_from_sklearn.json", function(error, treeData) {
   root = treeData[0];
   update(root);
 });
 
+// ?? Is this continually being called?  
 function update(source) {
 
   // Compute the new tree layout.
@@ -97,8 +96,6 @@ function update(source) {
       .attr('y', 10)  // 10 pixels under the circle
       .text(function(d) {return d.name;})
     ;}
-
-
 
   // Enter the nodes.
   // assigns the variable / function nodeEnter to the action of appending
