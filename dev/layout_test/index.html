@@ -14,8 +14,14 @@ body {
   font-weight: bold;
 }
 
-.tile {
+.tile, .zoom {
   shape-rendering: crispEdges;
+}
+
+.zoom {
+  pointer-events: none;
+  stroke: #808080;
+  stroke-width:2.5px;
 }
 
 .cell-hover {

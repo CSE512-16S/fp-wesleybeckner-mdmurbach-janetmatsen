@@ -61,17 +61,37 @@ function show_image(filename, outerWidth, outerHeight, title, id) {
           .attr("height", y(1) - y(0))
           .style("fill", function(d) { return z(d); })
           .on("mouseover", function(d,i){
+              data = d3.select(this);
               var index = i;
-              d3.selectAll("#inputs").selectAll(".tile").classed("cell-hover", function(d, i) {
-                  if(i % (N*M) == index) {return true;}
-                  });
-              d3.selectAll("#output").selectAll(".tile").classed("cell-hover", function(d, i) {
-                  if(i % (N*M) == index) {return true;}
-                  });
+              d3.selectAll("#inputs svg")[0].forEach( function(d, i) {
+                  // select the rectangle in each of the input svg corresponding to the
+                  // one selected on mouseover (index)
+                  t = d3.selectAll("#inputs").selectAll(".tile")[0][i*(N*M) + index];
+                  d3.select(d).append("rect")
+                      .attr("class", "zoom")
+                      .attr("x", data.attr("x") - 16*(x(1) - x(0))/2)
+                      .attr("y", data.attr("y") - 16*(y(1) - y(0))/2)
+                      .attr("width", 16*(x(1) - x(0)))
+                      .attr("height", 16*(y(1) - y(0)))                  
+                      .style("fill", t.style.fill)
+                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+              })
+              
+              d3.selectAll("#output svg")[0].forEach( function(d, i) {
+                  t = d3.selectAll("#output").selectAll(".tile")[0][i*(N*M) + index];
+                  d3.select(d).append("rect")
+                      .attr("class", "zoom")
+                      .attr("x", data.attr("x") - 16*(x(1) - x(0))/2) // column number
+                      .attr("y", data.attr("y") - 16*(y(1) - y(0))/2) // row number
+                      .attr("width", 16*(x(1) - x(0)))
+                      .attr("height", 16*(y(1) - y(0)))                  
+                      .style("fill", t.style.fill)
+                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+              })
                 })
           .on("mouseout", function(){
-               d3.selectAll("#inputs").selectAll(".tile").classed("cell-hover",false)
-               d3.selectAll("#output").selectAll(".tile").classed("cell-hover",false);
+               d3.selectAll("#inputs").selectAll(".zoom").remove()
+               d3.selectAll("#output").selectAll(".zoom").remove()
                });
                
       svg.append("text")
