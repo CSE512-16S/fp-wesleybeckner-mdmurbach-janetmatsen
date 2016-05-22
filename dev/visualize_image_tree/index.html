@@ -86,7 +86,7 @@ function update(source) {
       .text('abc')
       .attr('x', 20)  // 20 pixels to the right
       .attr('y', 10)  // 10 pixels under the circle
-      .text('abc')
+      .text(function(d) {return d.name;})
     ;}
 
   // Enter the nodes.
