@@ -90,6 +90,7 @@ function show_image(filename, outerWidth, outerHeight, title, id) {
               })
                 })
           .on("mouseout", function(){
+               // remove the added rectangles (class = zoom)
                d3.selectAll("#inputs").selectAll(".zoom").remove()
                d3.selectAll("#output").selectAll(".zoom").remove()
                });
