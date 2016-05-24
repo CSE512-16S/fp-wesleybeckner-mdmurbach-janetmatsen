@@ -1,5 +1,7 @@
-var a;
-function generate_slider(title) {
+var num_tree;
+var depth;
+
+function generate_slider(title, id, func) {
     var margin = {top: 30, right: 10, bottom: 30, left: 10},
         width = .18*window.innerWidth - margin.left - margin.right,
         height = 70 - margin.bottom - margin.top;;
@@ -12,7 +14,7 @@ function generate_slider(title) {
         .x(x)
         .on("brush", brushed);
 
-    var svg = d3.select(".slider").append("svg")
+    var svg = d3.select("." + id).append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
@@ -32,11 +34,9 @@ function generate_slider(title) {
         
     var slider = svg.append("g")
         .attr("class", "slider");
-        
-    var slider_value = d3.select(".slider").append("text")
-    
+            
     svg.append("text")
-        .attr("class", "title")
+        .attr("class", "title" + id)
         .attr("x", width/2)
         .attr("y", -margin.top/2)
         .attr("text-anchor", "middle")
@@ -51,7 +51,7 @@ function generate_slider(title) {
         .attr("r", 7);
 
     slider
-        .call(brush.extent([3]))
+        .call(brush.extent([2]))
         .call(brush.event);
 
     // 
@@ -60,18 +60,21 @@ function generate_slider(title) {
 
       if (d3.event.sourceEvent) { // not a programmatic event
         value = Math.round(4*d3.mouse(this)[0]/x(4) + 1);
-        console.log(value)
         if(value > 4) {
             value = 4;
         } else if(value < 1) {
             value = 1;            
         }
       
-      brush.extent([value, value]);
+      brush.extent([value]);
       }
 
       handle.attr("cx", x(value));
-      d3.select(".title").text(title + ": " + value);
+      d3.select(".title" + id).text(title + ": " + value);
+      if(value!=depth){
+        func(value);
+        depth = value;
+      }
 }
     
 }
