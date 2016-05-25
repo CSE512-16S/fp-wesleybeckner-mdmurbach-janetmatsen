@@ -14,8 +14,14 @@ body {
   font-weight: bold;
 }
 
-.tile {
+.tile, .zoom {
   shape-rendering: crispEdges;
+}
+
+.zoom {
+  pointer-events: none;
+  stroke: #000;
+  stroke-width:2.5px;
 }
 
 .cell-hover {
@@ -35,11 +41,17 @@ body {
 }
 
 #inputs {
-    width: 80%;
-    margin: 0 auto; 
+    width: 78%;
+    float: right;
     white-space: nowrap; <!-- keep everything on one line -->
     vertical-align: top;
     overflow: hidden;
+    text-align: center;
+}
+
+#interactions {
+    width: 18%;
+    float: left;
     text-align: center;
 }
 
@@ -71,30 +83,84 @@ body {
     stroke-width: 2px;
 }
 
+.axis {
+  font: 10px sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.axis .domain {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+  stroke-width: 10px;
+  stroke-linecap: round;
+}
+
+.axis .halo {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 8px;
+  stroke-linecap: round;
+}
+
+.slider .handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: .5;
+  stroke-width: 1.25px;
+  cursor: crosshair;
+}
+
+
+
 </style>
 <script type="text/javascript" src="./d3/d3.js"></script>
 <script type="text/javascript" src="./scripts/d3-scale.v0.7.min.js"></script>
 <script type="text/javascript" src="./scripts/tree_styling.js"></script>
 <script type="text/javascript" src="./scripts/generate_images.js"></script>
 <script type="text/javascript" src="./scripts/generate_tree.js"></script>
+<script type="text/javascript" src="./scripts/slider.js"></script>
 </head>
 <body>
-<div id="inputs"><h1>Inputs</h1></div>
+<div id="interactions"><h1>Parameters</h1>
+    <div class="depth_slider"></div>
+    <div class="forest_slider"></div>
+</div>
+<div id="inputs"><h1>Features</h1></div>
 <div id="tree"><h1>Tree</h1></div>
 <div id="output"><h1>Outputs</h1></div>
 <script>
 
-// ************** Generate the inputs  *****************
+// ************** Generate the images  *****************
 
-outerWidth_input = window.innerWidth/5; // 80% of the screen (div width) / 4 images = 1/5
+outerWidth_input = (.78/4)*window.innerWidth; // 78% of the screen (div width) / 4 images = 1/5
 outerHeight_input = outerWidth_input; // make a square image
+
+outerWidth_output = outerWidth_input; // These have to be the same size still. Need to figure out how to account
+outerHeight_output = outerHeight_input; // for different translations of the zoom rects if we want these to be different. - Matt
 
 // Make the input and output images
 show_image("data/Height.txt", outerWidth_input, outerHeight_input, "Height", "#inputs");
 show_image("data/Potential.txt", outerWidth_input, outerHeight_input, "Potential", "#inputs");
 show_image("data/Phase.txt", outerWidth_input, outerHeight_input, "Phase", "#inputs");
 show_image("data/Amplitude.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
-show_image("data/Photoluminescence.txt", outerWidth_input, outerHeight_input, "Photoluminescence", "#output");
+show_output("data/Photoluminescence.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
+
+// ************** Generate the slider  *****************
+
+generate_slider("Tree Depth", "depth_slider", update);
+generate_slider("# of Trees", "forest_slider", function(value) { return 0;}); // does nothing for now...
+
+// Value is the value of the slider (i.e. the Tree Depth or # of Trees etc.)
+function update(value) {
+    if(value >= 2) {
+        return update_output("data/Photoluminescence.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
+    } else {
+        return update_output("data/Height.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
+    }
+}
 
 // ************** Generate the tree diagram  *****************
 generate_tree();
