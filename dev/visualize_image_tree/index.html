@@ -45,8 +45,14 @@ var margin = {top: 20, right: 120, bottom: 20, left: 120},
 // Variable i get used in `var_node` below. 
 var i = 0;
 
+function separation(a, b) {
+  return (a.parent == b.parent ? 1 : 2) / a.depth;
+}
+
 var tree = d3.layout.tree()
- .size([height, width]);
+  .size([height, width]) // size option A: fixed width height/width for whole tree
+  //.nodeSize([3, 3])  // size option B: fixed spacing between nodes
+  ; 
 
 var diagonal = d3.svg.diagonal()
  .projection(function(d) { return [d.x, d.y]; });
@@ -114,7 +120,9 @@ function update(source) {
     // http://stackoverflow.com/questions/19297808/how-to-display-name-of-node-when-mouse-over-on-node-in-collapsible-tree-graph
     console.log("mouse is over")
     var hoverCircle = d3.select(this);
-	  hoverCircle.transition().duration(500)
+      // note: the transition makes it possible for the node to remain enlarged
+      // after you expect it to shrink (if you mouseout before it is done enlarging)
+	  hoverCircle.transition().duration(300)
 	    .attr("opacity", 1 )
 		.attr("r", hoverCircle.attr("r") * 1 + 10 );
     }
