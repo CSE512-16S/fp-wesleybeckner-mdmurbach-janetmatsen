@@ -1,5 +1,7 @@
-function generate_tree() {
+function generate_tree(tree_json_path) {
     console.log("Generate Tree")
+    console.log("json path:")
+    console.log(tree_json_path)
         var margin = {top: 20, right: 20, bottom: 20, left: 20},
      width = .65*window.innerWidth - margin.right - margin.left,
      height = window.innerHeight/2 - margin.top - margin.bottom;
@@ -26,7 +28,7 @@ function generate_tree() {
      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     // Load our .json data exported from scikit-learn
-    d3.json("data/sample_json_from_sklearn.json", function(error, treeData) {
+    d3.json(tree_json_path, function(error, treeData) {
       root = treeData[0];
       update(root);
     });
@@ -48,7 +50,8 @@ function generate_tree() {
       // Declare the variable / function node so that when we call it later it 
       // will know to select the appropriate object (a node) with the appropriate .id.
       var node = svg.selectAll("g.node")
-       .data(nodes, function(d) { return d.id || (d.id = ++i); });
+        // ?? What's the deal with the || and the ++  (?)  (learn that javascript!! haha)
+        .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
       // http://stackoverflow.com/questions/19297808/how-to-display-name-of-node-when-mouse-over-on-node-in-collapsible-tree-graph
       // You have to apply this to the node.enter().append("g") thing, 
