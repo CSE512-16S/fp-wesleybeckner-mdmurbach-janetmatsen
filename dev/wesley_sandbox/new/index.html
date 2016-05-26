@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 10px sans-serif;
+  width: 100%;
+  display: block;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.tile {
+  shape-rendering: crispEdges;
+}
+
+.cell-hover {
+        stroke: #F00;
+        stroke-width:2.5px;   
+      }
+
+.title {
+    font-size: 14px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#inputs {
+    width: 80%;
+    margin: 0 auto; 
+    white-space: nowrap; <!-- keep everything on one line -->
+    vertical-align: top;
+    overflow: hidden;
+    text-align: center;
+}
+
+#tree {
+    width: 55%;
+    float: left;
+    text-align: center;
+}
+
+#output {
+    width: 40%;
+    float: right;
+    text-align: center;
+}
+
+.node circle {
+    fill: #6D7B8D;
+    stroke: #6D7B8D;
+    //fill: #f1f1f1;
+    //stroke: #f1f1f1;
+    //stroke-width: 1px;
+}
+
+.node text { font: 12px sans-serif; }
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
+}
+
+</style>
+<script type="text/javascript" src="./d3/d3.js"></script>
+<script type="text/javascript" src="./scripts/d3-scale.v0.7.min.js"></script>
+<script type="text/javascript" src="./scripts/tree_styling.js"></script>
+<script type="text/javascript" src="./scripts/generate_images.js"></script>
+<script type="text/javascript" src="./scripts/generate_tree.js"></script>
+</head>
+<body>
+<div id="inputs"><h1>Inputs</h1></div>
+<div id="tree"><h1>Tree</h1></div>
+<div id="output"><h1>Outputs</h1></div>
+<script>
+
+// ************** Generate the inputs  *****************
+
+outerWidth_input = window.innerWidth/5; // 80% of the screen (div width) / 4 images = 1/5
+outerHeight_input = outerWidth_input; // make a square image
+
+// Make the input and output images
+show_image("data/Height.txt", outerWidth_input, outerHeight_input, "Height", "#inputs");
+show_image("data/Potential.txt", outerWidth_input, outerHeight_input, "Potential", "#inputs");
+show_image("data/Phase.txt", outerWidth_input, outerHeight_input, "Phase", "#inputs");
+show_image("data/Amplitude.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
+show_image("data/Photoluminescence.txt", outerWidth_input, outerHeight_input, "Photoluminescence", "#output");
+
+// ************** Generate the tree diagram  *****************
+generate_tree();
+
+</script>
+</body>
+</html>

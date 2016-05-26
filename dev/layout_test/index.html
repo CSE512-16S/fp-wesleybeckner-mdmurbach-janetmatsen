@@ -39,6 +39,16 @@ body {
   stroke: #000;
   shape-rendering: crispEdges;
 }
+#parameters {
+    width: 80%;
+    margin: 0 auto; 
+    white-space: nowrap; <!-- keep everything on one line -->
+    vertical-align: top;
+    overflow: hidden;
+    text-align: center;
+}
+    
+
 
 #inputs {
     width: 78%;
@@ -124,11 +134,16 @@ body {
 <script type="text/javascript" src="./scripts/slider.js"></script>
 </head>
 <body>
+<<<<<<< HEAD
+<div id="parameters"><h1>Parameters</h1></div>
+<div id="inputs"><h1>Inputs</h1></div>
+=======
 <div id="interactions"><h1>Parameters</h1>
     <div class="depth_slider"></div>
     <div class="forest_slider"></div>
 </div>
 <div id="inputs"><h1>Features</h1></div>
+>>>>>>> 792385ab805916fa5757eae69432eb1eb231aa76
 <div id="tree"><h1>Tree</h1></div>
 <div id="output"><h1>Outputs</h1></div>
 <script>
