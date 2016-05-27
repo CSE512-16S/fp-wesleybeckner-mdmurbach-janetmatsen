@@ -30,7 +30,7 @@ function generate_tree(tree_json_path) {
    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   
   // Load our .json data exported from scikit-learn
-  d3.json("data/sample_json_from_sklearn.json", function(error, treeData) {
+  d3.json(tree_json_path, function(error, treeData) {
     root = treeData[0];
     update(root);
   });
