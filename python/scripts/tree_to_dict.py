@@ -40,6 +40,9 @@ def save_tree_as_dict(clf, feature_names, label_names, save_path, node_index=0):
     # save the dict as a text file
 
     with open(save_path, 'w') as f:
+        f.write("[\n")
         f.write(json.dumps(tree_dict))
+        f.write("\n]")
+
 
 

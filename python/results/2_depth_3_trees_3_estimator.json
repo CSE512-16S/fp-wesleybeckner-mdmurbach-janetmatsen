@@ -1,1 +1,3 @@
-{"name": "Po2_flat > 0.23472070694", "children": [{"name": "Po2_flat > 0.258765816689", "children": [{"name": "0 of p"}, {"name": "0 of p"}]}, {"name": "Po2_flat > 0.12510061264", "children": [{"name": "0 of p"}, {"name": "0 of p"}]}]}
+[
+{"children": [{"children": [{"name": "0 of p"}, {"name": "0 of p"}], "name": "Po2_flat > 0.2544349431991577"}, {"children": [{"name": "0 of p"}, {"name": "0 of p"}], "name": "Po2_flat > 0.12489020824432373"}], "name": "Po2_flat > 0.24224638938903809"}
+]
