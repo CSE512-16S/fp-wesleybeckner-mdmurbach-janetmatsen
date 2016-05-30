@@ -34,6 +34,7 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <!-- load the helper .js files --> 
 <script type="text/javascript"src="tree_styling.js"></script>
+<script type="text/javascript"src="tree_traversing.js"></script>
  
 <script>
 
@@ -124,7 +125,8 @@ function update(source) {
       // after you expect it to shrink (if you mouseout before it is done enlarging)
 	  hoverCircle.transition().duration(300)
 	    .attr("opacity", 1 )
-		.attr("r", hoverCircle.attr("r") * 1 + 10 );
+		//.attr("r", hoverCircle.attr("r") * 1 + 10 ) // can get stuck big!
+		.attr("r", 4);
     }
  
   var hoverCircleOff = function() {
