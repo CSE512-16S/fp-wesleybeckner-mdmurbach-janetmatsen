@@ -25,7 +25,7 @@ def rules(tree, features, labels, node_index=0):
     right_child = tree.children_right[node_index]
     
     if left_child == _tree.TREE_LEAF:
-        print("this node is a leaf") 
+        print("this node ({}) is a leaf".format(node_index)) 
         print("tree.value[node_index]: {}".format(tree.value[node_index]))
         count_labels = zip(tree.value[node_index, 0], labels)
         samples = tree.n_node_samples[node_index]
@@ -33,30 +33,19 @@ def rules(tree, features, labels, node_index=0):
         print("count labels: {}".format(count_labels))
         print("count_labels: {}")
         leaf_label = "{} points".format(samples)
-        node['name'] = leaf_label
+        node["name"] = leaf_label
     else:
+        # Get info to store for that node:
+        feature = tree.threshold[node_index]
+        threshold = tree.threshold[node_index]
+        # todo: round the values before storing them as strings. 
+        node["name"] = '{} > {}'.format(feature, threshold)
+        # recurse through function for right and left children
         left_index = tree.children_left[node_index]
         right_index = tree.children_right[node_index]
-        node['children'] = [rules(tree, features, labels, right_index),
+        node["children"] = [rules(tree, features, labels, right_index),
                             rules(tree, features, labels, left_index)]
     return node
-
-    print("is this node a leaf? ({})".format(
-        tree.left_child == _tree.TREE_LEAF))
-
-    # if tree.children_left[node_index] == -1:  # indicates leaf
-    #     count_labels = zip(clf.tree_.value[node_index, 0], labels)
-    #     node['name'] = ', '.join(('{} of {}'.format(int(count), label)
-    #                               for count, label in count_labels))
-    # else:
-    #     feature = features[clf.tree_.feature[node_index]]
-    #     threshold = clf.tree_.threshold[node_index]
-    #     node['name'] = '{} > {}'.format(feature, threshold)
-    #     left_index = clf.tree_.children_left[node_index]
-    #     right_index = clf.tree_.children_right[node_index]
-    #     node['children'] = [rules(clf, features, labels, right_index),
-    #                         rules(clf, features, labels, left_index)]
-    # return node
 
 
 def save_tree_as_dict(clf, feature_names, label_names, save_path, node_index=0):
