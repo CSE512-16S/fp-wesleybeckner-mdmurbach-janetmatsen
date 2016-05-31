@@ -134,7 +134,7 @@ body {
 <div id="output"><h1>Outputs</h1></div>
 <script>
 // ************** Load Data ****************************
-d3_queue.queue()
+var test = d3_queue.queue()
     .defer(d3.json, "../../../python/results/1_depth_1_trees_1_estimator.json")
     .defer(d3.json, "../../../python/results/1_depth_2_trees_1_estimator.json")
     .defer(d3.json, "../../../python/results/1_depth_2_trees_2_estimator.json")
@@ -334,7 +334,7 @@ generate_slider("# of Trees", "forest_slider", function(value) { return 0;}); //
 
 // Value is the value of the slider (i.e. the Tree Depth or # of Trees etc.)
 function update(value) {
-    if(value >= 2) {
+    if(value == 2) {
         return update_output("data/Photoluminescence.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
     } else {
         return update_output("data/Height.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
@@ -342,7 +342,7 @@ function update(value) {
 }
 
 // ************** Generate the tree diagram  *****************
-generate_tree("../../../python/results/1_depth_1_trees_1_estimator.json");
+generate_tree(one_depth_one_trees_one_estimator);
 //generate_tree("python/results/3_depth_1_trees_0_estimator.json");
 
 </script>
