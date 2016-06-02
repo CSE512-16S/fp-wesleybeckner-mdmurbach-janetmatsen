@@ -272,8 +272,6 @@ function update_output(filename_predict, filename_true, outerWidth, outerHeight,
           // object for each pixel
           flatten = d3.merge(data);
           
-          console.log(flatten);
-          
           z.domain(d3.extent(flatten, function(d) {return d}));
 
           // Display the tiles for each non-zero bucket.
@@ -286,7 +284,7 @@ function update_output(filename_predict, filename_true, outerWidth, outerHeight,
               .attr("y", function(d, j) {return y(Math.floor(j/N)); }) // row number
               .attr("width", x(1) - x(0))
               .attr("height", y(1) - y(0))
-              .transition().duration(1000)
+              .transition().duration(500)
               .style("fill", function(d) { return z(d); })
               .on("mouseover", function(d,i){
                   data = d3.select(this);

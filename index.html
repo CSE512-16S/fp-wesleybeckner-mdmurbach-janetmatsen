@@ -116,7 +116,9 @@ body {
 
 
 </style>
+<link rel="stylesheet" href="css/d3.slider.css" />
 <script type="text/javascript" src="./d3/d3.js"></script>
+<script type="text/javascript" src="./scripts/d3.slider.js"></script>
 <script type="text/javascript" src="./scripts/d3-scale.v0.7.min.js"></script>
 <script type="text/javascript" src="./scripts/tree_styling.js"></script>
 <script type="text/javascript" src="./scripts/generate_images.js"></script>
@@ -131,6 +133,7 @@ body {
 <div id="inputs"><h1>Features</h1></div>
 <div id="tree"><h1>Tree</h1></div>
 <div id="output"><h1>Outputs</h1></div>
+
 <script>
 
 // ************** Generate the images  *****************
@@ -148,23 +151,40 @@ show_image("data/Phase.txt", outerWidth_input, outerHeight_input, "Phase", "#inp
 show_image("data/Amplitude.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
 show_output("data/Photoluminescence.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
 
-// ************** Generate the slider  *****************
+// ************** Generate the sliders  *****************
+depth_slider = d3.slider().scale(d3.scale.ordinal().domain([1,2,3,4,5]).rangePoints([0, 1], 0.5)).axis(d3.svg.axis()).snap(true).value(4);
 
-generate_slider("Tree Depth", "depth_slider", update);
-generate_slider("# of Trees", "forest_slider", function(value) { return 0;}); // does nothing for now...
+forest_slider = d3.slider().scale(d3.scale.ordinal().domain([1,2,3,4,5,6,7,8]).rangePoints([0, 1], 0.5)).axis(d3.svg.axis()).snap(true).value(4);
+    
+d3.select('.depth_slider').call(depth_slider);
+d3.select('.forest_slider').call(forest_slider);
+    
+depth_slider.on("slide", function(evt, value) {
+        update(value);
+    });
+    
+forest_slider.on("slide", function(evt, value) {
+        //update(value);
+    });
 
 // Value is the value of the slider (i.e. the Tree Depth or # of Trees etc.)
 function update(value) {
-    if(value >= 2) {
-        return update_output("data/Photoluminescence.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
+    if(value >= 2 && value <= 4) {
+        var dataset = "data/Height.txt";
     } else {
-        return update_output("data/Height.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
+        var dataset = "data/Photoluminescence.txt";
     }
+    
+    var tree = value + "_depth_4_trees_1_estimator.json";
+    
+    update_output(dataset, "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output")
+    
+    generate_tree("python/results/" + tree); // doesn't update
 }
 
 // ************** Generate the tree diagram  *****************
 //generate_tree("data/sample_json_from_sklearn.json");
-generate_tree("python/results/4_depth_1_trees_1_estimator.json");
+//generate_tree("python/results/4_depth_1_trees_1_estimator.json");
 
 </script>
 </body>
