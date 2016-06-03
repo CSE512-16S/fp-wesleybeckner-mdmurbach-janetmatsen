@@ -154,6 +154,10 @@ show_image("data/Phase.txt", outerWidth_input, outerHeight_input, "Phase", "#inp
 show_image("data/Amplitude.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
 show_output("data/Photoluminescence.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
 
+// ************** Generate the default tree diagram  *****************
+
+generate_tree("python/results/4_depth_1_trees_1_estimator.json");
+
 // ************** Generate the sliders  *****************
 depth_slider = d3.slider().scale(d3.scale.ordinal().domain([1,2,3,4,5]).rangePoints([0, 1], 0.5)).axis(d3.svg.axis()).snap(true).value(4);
 
@@ -182,12 +186,8 @@ function update(value) {
     
     update_output(dataset, "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output")
     
-    generate_tree("python/results/" + tree); // doesn't update
+    update_tree("python/results/" + tree); // doesn't update
 }
-
-// ************** Generate the tree diagram  *****************
-//generate_tree("data/sample_json_from_sklearn.json");
-//generate_tree("python/results/4_depth_1_trees_1_estimator.json");
 
 </script>
 </body>
