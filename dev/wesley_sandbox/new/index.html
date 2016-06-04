@@ -220,7 +220,16 @@ var test = d3_queue.queue()
     .defer(d3.json, "../../../python/results/5_depth_5_trees_3_estimator.json")
     .defer(d3.json, "../../../python/results/5_depth_5_trees_4_estimator.json")
     .defer(d3.json, "../../../python/results/5_depth_5_trees_5_estimator.json")
-    .await(analyze);
+    .awaitAll(function(error, result) {
+	if (error) throw error;
+	console.log(result);
+	result.forEach(function(d) {
+	return d
+	});
+	});
+
+var thisthing = (d3.json, "../../../python/results/1_depth_1_trees_1_estimator.json")
+ 
 
 function analyze(error, one_depth_one_trees_one_estimator, one_depth_two_trees_one_estimator, one_depth_two_trees_two_estimator, one_depth_three_trees_one_estimator, one_depth_three_trees_two_estimator, one_depth_three_trees_three_estimator, one_depth_four_trees_one_estimator, one_depth_four_trees_two_estimator, one_depth_four_trees_three_estimator, one_depth_four_trees_four_estimator, one_depth_five_trees_one_estimator, one_depth_five_trees_two_estimator, one_depth_five_trees_three_estimator, one_depth_five_trees_four_estimator, one_depth_five_trees_five_estimator, two_depth_one_trees_one_estimator, two_depth_two_trees_one_estimator, two_depth_two_trees_two_estimator, two_depth_three_trees_one_estimator, two_depth_three_trees_two_estimator, two_depth_three_trees_three_estimator, two_depth_four_trees_one_estimator, two_depth_four_trees_two_estimator, two_depth_four_trees_three_estimator, two_depth_four_trees_four_estimator, two_depth_five_trees_one_estimator, two_depth_five_trees_two_estimator, two_depth_five_trees_three_estimator, two_depth_five_trees_four_estimator, two_depth_five_trees_five_estimator, three_depth_one_trees_one_estimator, three_depth_one_trees_two_estimator, three_depth_two_trees_one_estimator, three_depth_two_trees_two_estimator, three_depth_three_trees_one_estimator, three_depth_three_trees_two_estimator, three_depth_three_trees_three_estimator, three_depth_four_trees_one_estimator, three_depth_four_trees_two_estimator, three_depth_four_trees_three_estimator, three_depth_four_trees_four_estimator, three_depth_five_trees_one_estimator, three_depth_five_trees_two_estimator, three_depth_five_trees_three_estimator, three_depth_five_trees_four_estimator, three_depth_five_trees_five_estimator, four_depth_one_trees_one_estimator, four_depth_one_trees_two_estimator, four_depth_one_trees_three_estimator, four_depth_two_trees_one_estimator, four_depth_two_trees_two_estimator, four_depth_two_trees_three_estimator, four_depth_three_trees_one_estimator, four_depth_three_trees_two_estimator, four_depth_three_trees_three_estimator, four_depth_four_trees_one_estimator, four_depth_four_trees_two_estimator, four_depth_four_trees_three_estimator, four_depth_four_trees_four_estimator, four_depth_five_trees_one_estimator, four_depth_five_trees_two_estimator, four_depth_five_trees_three_estimator, four_depth_five_trees_four_estimator, four_depth_five_trees_five_estimator, five_depth_one_trees_one_estimator, five_depth_one_trees_two_estimator, five_depth_one_trees_three_estimator, five_depth_one_trees_four_estimator, five_depth_two_trees_one_estimator, five_depth_two_trees_two_estimator, five_depth_two_trees_three_estimator, five_depth_two_trees_four_estimator, five_depth_three_trees_one_estimator, five_depth_three_trees_two_estimator, five_depth_three_trees_three_estimator, five_depth_three_trees_four_estimator, five_depth_four_trees_one_estimator, five_depth_four_trees_two_estimator, five_depth_four_trees_three_estimator, five_depth_four_trees_four_estimator, five_depth_five_trees_one_estimator, five_depth_five_trees_two_estimator, five_depth_five_trees_three_estimator, five_depth_five_trees_four_estimator, five_depth_five_trees_five_estimator) {
     if(error) {console.log(error); } 
@@ -326,25 +335,35 @@ show_image("data/Potential.txt", outerWidth_input, outerHeight_input, "Potential
 show_image("data/Phase.txt", outerWidth_input, outerHeight_input, "Phase", "#inputs");
 show_image("data/Amplitude.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
 show_output("data/Photoluminescence.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
+var tree_part = "1_trees_";
+var depth_part = "1_depth_";
+var path_to_json_wes ="../../../python/results/" +  depth_part + tree_part + "1_estimator.json";
 
 // ************** Generate the slider  *****************
 
-generate_slider("Tree Depth", "depth_slider", update);
-generate_slider("# of Trees", "forest_slider", function(value) { return 0;}); // does nothing for now...
+generate_slider("Tree Depth", "depth_slider", update_depth);
+generate_slider("# of Trees", "forest_slider", update_trees); 
 
 // Value is the value of the slider (i.e. the Tree Depth or # of Trees etc.)
-function update(value) {
-    if(value == 2) {
-        return update_output("data/Photoluminescence.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
-    } else {
-        return update_output("data/Height.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
-    }
+
+
+function update_trees(value) {
+    window.tree_part= value + "_trees_"
+    var path_to_json_wes="../../../python/results/" + depth_part + tree_part + "1_estimator.json";
+    console.log(path_to_json_wes);
+    generate_tree(path_to_json_wes);
+}
+function update_depth(value) {
+    window.depth_part= value + "_depth_"
+    var path_to_json_wes="../../../python/results/" + depth_part + tree_part + "1_estimator.json";
+    console.log(path_to_json_wes);
+    generate_tree(path_to_json_wes);
 }
 
 // ************** Generate the tree diagram  *****************
-generate_tree(one_depth_one_trees_one_estimator);
-//generate_tree("python/results/3_depth_1_trees_0_estimator.json");
 
+//var path_to_json_wes = update_depth(depth);
+//var path_to_json_wes = update_trees(num_tree);
 </script>
 </body>
 </html>
