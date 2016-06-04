@@ -41,7 +41,6 @@ function generate_tree(tree_json_path) {
       .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
   // Load our .json data exported from scikit-learn
   d3.json(tree_json_path, function(error, treeData) {
     root = treeData[0];
@@ -72,7 +71,6 @@ function generate_tree(tree_json_path) {
     // You have to apply this to the node.enter().append("g") thing, 
     // *not* the circle made by nodeEnter.append("circle").  (need to understand better)
     var hoverLabelOn = function() {
-      console.log("hover on");
       d3.select(this).append("text")
         .classed('info', true)
         .attr('x', 20)  // 20 pixels to the right
@@ -81,7 +79,6 @@ function generate_tree(tree_json_path) {
       ;}
 
     var hoverLabelOff = function() {
-      console.log("hover off");
       d3.select(this).select('text.info').remove()
       ;}
 
@@ -98,14 +95,13 @@ function generate_tree(tree_json_path) {
 
     var hoverCircleOn = function() {
       // http://stackoverflow.com/questions/19297808/how-to-display-name-of-node-when-mouse-over-on-node-in-collapsible-tree-graph
-      console.log("mouse is over")
       var hoverCircle = d3.select(this);
         // note: the transition makes it possible for the node to remain enlarged
         // after you expect it to shrink (if you mouseout before it is done enlarging)
         hoverCircle.transition().duration(300)
           .attr("opacity", 1 )
           //.attr("r", hoverCircle.attr("r") * 1 + 10 );
-          .attr("r", 7);
+          .attr("r", 9);
       }
    
     var hoverCircleOff = function() {
@@ -116,7 +112,7 @@ function generate_tree(tree_json_path) {
 
     // Plot circles, colored by the decision being made
     nodeEnter.append("circle")
-      .attr("r", 5)
+      .attr("r", 6)
       .attr("opacity", NODE_OPACITY)
       .style("fill", function(d) { return color_for_node(d.name); })
       .on("mouseover", hoverCircleOn )
@@ -145,7 +141,12 @@ function generate_tree(tree_json_path) {
      })
      .attr("y2", function (d){
        return d.target.y;
-     });
+     })
+    // thickness using the percent of points that went through the node 
+    .attr("stroke-width", function(d) {
+      //console.log(d.target['percent of samples']); 
+      return d.target['percent']/10;})   
+   ; 
    }
 }
 

@@ -1,3 +1,3 @@
 [
-{"children": [{"name": "3745 points"}, {"name": "16193 points"}], "name": "Potential > 0.2444"}
+{"number of samples": "19969", "children": [{"number of samples": "4089", "percent": 20.48, "name": "4089 points"}, {"number of samples": "15880", "percent": 79.52, "name": "15880 points"}], "percent": 100.0, "name": "Potential > 0.2418"}
 ]

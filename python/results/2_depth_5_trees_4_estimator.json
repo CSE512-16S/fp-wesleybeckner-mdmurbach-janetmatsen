@@ -1,3 +1,3 @@
 [
-{"children": [{"children": [{"name": "2249 points"}, {"name": "2204 points"}], "name": "Potential > 0.2588"}, {"children": [{"name": "15000 points"}, {"name": "468 points"}], "name": "Potential > 0.1258"}], "name": "Potential > 0.2383"}
+{"number of samples": "19863", "children": [{"number of samples": "4012", "children": [{"number of samples": "2652", "percent": 13.35, "name": "2652 points"}, {"number of samples": "1360", "percent": 6.85, "name": "1360 points"}], "percent": 20.2, "name": "Potential > 0.2546"}, {"number of samples": "15851", "children": [{"number of samples": "15409", "percent": 77.58, "name": "15409 points"}, {"number of samples": "442", "percent": 2.23, "name": "442 points"}], "percent": 79.8, "name": "Potential > 0.125"}], "percent": 100.0, "name": "Potential > 0.2422"}
 ]

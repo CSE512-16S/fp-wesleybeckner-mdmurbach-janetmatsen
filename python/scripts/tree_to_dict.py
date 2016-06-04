@@ -23,6 +23,13 @@ def rules(tree, features, labels, node_index=0):
     
     left_child = tree.children_left[node_index]
     right_child = tree.children_right[node_index]
+
+    # record the number of samples for that node. 
+    samples = tree.n_node_samples[node_index]
+    node['number of samples'] = str(samples) 
+    # record the percent of samples
+    percent = (100. * samples / float(tree.n_node_samples[0]))
+    node['percent'] = round(percent, 2)
     
     if left_child == _tree.TREE_LEAF:
         #print("this node ({}) is a leaf".format(node_index)) 
@@ -34,6 +41,8 @@ def rules(tree, features, labels, node_index=0):
         #print("count_labels: {}")
         leaf_label = "{} points".format(samples)
         node["name"] = leaf_label
+
+
     else:
         # Get info to store for that node:
         feature_number = tree.feature[node_index] 
@@ -43,6 +52,7 @@ def rules(tree, features, labels, node_index=0):
         
         # todo: round the values before storing them as strings. 
         node["name"] = '{} > {}'.format(feature_name, threshold_rounded)
+
         # recurse through function for right and left children
         left_index = tree.children_left[node_index]
         right_index = tree.children_right[node_index]
