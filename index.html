@@ -186,8 +186,16 @@ function update(value) {
     
     update_output(dataset, "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output")
     
-    update_tree("python/results/" + tree); // doesn't update
+    //update_tree("python/results/" + tree); // doesn't update
+    generate_tree("python/results/" + tree); 
 }
+
+
+// The variable trees_drawn is used to 
+// determine whether draw_tree is drawing the first
+// tree or re-drawing a new one. 
+// If it is a replacement tree, we want to delete the old one. 
+var trees_drawn = 1
 
 </script>
 </body>
