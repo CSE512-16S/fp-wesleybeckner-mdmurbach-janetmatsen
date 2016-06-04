@@ -21,9 +21,10 @@ function generate_tree(tree_json_path) {
   // Variable i get used in `var_node` below. 
   var i = 0;
 
-  function separation(a, b) {
-    return (a.parent == b.parent ? 1 : 2) / a.depth;
-  }
+  // this function isn't being used as of 6/4/2014...
+  // function separation(a, b) {
+  //   return (a.parent == b.parent ? 1 : 7) / a.depth;
+  // }
 
   var tree = d3.layout.tree()
      .size([width, height]) // size option A: fixed width height/width for whole tree
@@ -58,7 +59,7 @@ function generate_tree(tree_json_path) {
       links = tree.links(nodes);
 
     // Normalize for fixed-depth.
-    nodes.forEach(function(d) { d.y = d.depth * 20; });
+    nodes.forEach(function(d) { d.y = d.depth * 40; });
 
     // Declare the nodes:
     // Declare the variable / function node so that when we call it later it 
@@ -90,7 +91,6 @@ function generate_tree(tree_json_path) {
     var nodeEnter = node.enter().append("g")
       .attr("class", "node")
       .attr("transform", function(d) { 
-        console.log("here-1");
         return "translate(" + d.x + "," + d.y + ")"; })
       .on("mouseout", hoverLabelOff )
       .on("mouseover", hoverLabelOn )
@@ -104,17 +104,19 @@ function generate_tree(tree_json_path) {
         // after you expect it to shrink (if you mouseout before it is done enlarging)
         hoverCircle.transition().duration(300)
           .attr("opacity", 1 )
-          .attr("r", hoverCircle.attr("r") * 1 + 10 );
+          //.attr("r", hoverCircle.attr("r") * 1 + 10 );
+          .attr("r", 7);
       }
    
     var hoverCircleOff = function() {
       var hoverCircle = d3.select(this);
-        hoverCircle.attr("r", 5); // leave them bigger for fun
+        //hoverCircle.transition().duration(300)
+        //  .attr("r", 7); // leave them bigger for fun
     }
 
     // Plot circles, colored by the decision being made
     nodeEnter.append("circle")
-      .attr("r", 3)
+      .attr("r", 5)
       .attr("opacity", NODE_OPACITY)
       .style("fill", function(d) { return color_for_node(d.name); })
       .on("mouseover", hoverCircleOn )
