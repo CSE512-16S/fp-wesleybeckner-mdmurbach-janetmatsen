@@ -19,10 +19,11 @@ function feature_to_color(feature_name) {
                   '#17BECF']
     // example: "Po2_flat" --> "
     var matching_array = new Array();
-    matching_array['Po2_flat'] = '#1F77B4'
-    matching_array['Ph2_flat'] = '#FF7F0E'
-    matching_array['Ht2_flat'] = '#D62728'
-    matching_array['???'] = '#2CA02C'   // what is the last feature? 
+    // feature_names = ['Height', 'Potential', 'Phase', 'Amplitude']
+    matching_array['Potential'] = '#1F77B4'
+    matching_array['Phase'] = '#FF7F0E'
+    matching_array['Height'] = '#D62728'
+    matching_array['Amplitude'] = '#2CA02C'   // what is the last feature? 
 
     return matching_array[feature_name]
 }
