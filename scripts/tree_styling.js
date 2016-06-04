@@ -1,8 +1,5 @@
-function myFunction(p1, p2) {
-    return p1 * p2;              // The function returns the product of p1 and p2
-}
-
 function feature_from_node(node_name) { 
+    // parse the node text to figure out what feature is being used at that node.  
     // example:  "Po2_flat > 0.021143555641174316" --> "Po2_flat"
     // test: feature_from_node(root['name'])
     return node_name.match(/^[a-z0-9_]+/gi)[0] ;    
