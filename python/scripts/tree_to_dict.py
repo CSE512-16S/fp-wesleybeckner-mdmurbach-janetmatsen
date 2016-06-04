@@ -39,8 +39,9 @@ def rules(tree, features, labels, node_index=0):
         feature_number = tree.feature[node_index] 
         feature_name = features[feature_number]
         threshold = tree.threshold[node_index]
+        threshold_rounded = round(threshold, 4)
         # todo: round the values before storing them as strings. 
-        node["name"] = '{} > {}'.format(feature_name, threshold)
+        node["name"] = '{} > {}'.format(feature_name, threshold_rounded)
         # recurse through function for right and left children
         left_index = tree.children_left[node_index]
         right_index = tree.children_right[node_index]
