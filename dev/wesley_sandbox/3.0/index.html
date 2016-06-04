@@ -154,6 +154,9 @@ show_image("data/Ph.txt", outerWidth_input, outerHeight_input, "Phase", "#inputs
 show_image("data/Am.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
 show_output("data/Pl.txt", "data/Pl.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
 
+// The predicted output -wes
+show_predict("data/Pl.txt", "data/Pl.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
+
 // ************** Generate the default tree diagram  *****************
 
 generate_tree("python/results/4_depth_1_trees_1_estimator.json");
