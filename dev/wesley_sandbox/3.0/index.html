@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 10px sans-serif;
+  width: 100%;
+  display: block;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.tile, .zoom {
+  shape-rendering: crispEdges;
+}
+
+.zoom {
+  pointer-events: none;
+  stroke: #000;
+  stroke-width:2.5px;
+}
+
+.cell-hover {
+        stroke: #F00;
+        stroke-width:2.5px;   
+      }
+
+.title {
+    font-size: 14px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#inputs {
+    width: 78%;
+    float: right;
+    white-space: nowrap; <!-- keep everything on one line -->
+    vertical-align: top;
+    overflow: hidden;
+    text-align: center;
+}
+
+#interactions {
+    width: 18%;
+    float: left;
+    text-align: center;
+}
+
+#tree {
+    width: 65%;
+    float: left;
+    text-align: center;
+}
+
+#output {
+    width: 30%;
+    float: right;
+    text-align: center;
+}
+
+.node circle {
+    fill: #6D7B8D;
+    stroke: #6D7B8D;
+    //fill: #f1f1f1;
+    //stroke: #f1f1f1;
+    //stroke-width: 1px;
+}
+
+.node text { font: 12px sans-serif; }
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
+}
+
+.axis {
+  font: 10px sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.axis .domain {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+  stroke-width: 10px;
+  stroke-linecap: round;
+}
+
+.axis .halo {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 8px;
+  stroke-linecap: round;
+}
+
+.slider .handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: .5;
+  stroke-width: 1.25px;
+  cursor: crosshair;
+}
+
+
+
+</style>
+<link rel="stylesheet" href="css/d3.slider.css" />
+<script type="text/javascript" src="./d3/d3.js"></script>
+<script type="text/javascript" src="./scripts/d3.slider.js"></script>
+<script type="text/javascript" src="./scripts/d3-scale.v0.7.min.js"></script>
+<script type="text/javascript" src="./scripts/tree_styling.js"></script>
+<script type="text/javascript" src="./scripts/generate_images.js"></script>
+<script type="text/javascript" src="./scripts/generate_tree.js"></script>
+<script type="text/javascript" src="./scripts/slider.js"></script>
+</head>
+<body>
+<div id="interactions"><h1>Parameters</h1>
+    Tree Depth<br></br>
+    <div class="depth_slider"></div>
+    <br></br>
+    Number of Trees in Forest<br></br>
+    <div class="forest_slider"></div>
+</div>
+<div id="inputs"><h1>Features</h1></div>
+<div id="tree"><h1>Tree</h1></div>
+<div id="output"><h1>Outputs</h1></div>
+
+<script>
+
+// ************** Generate the images  *****************
+
+outerWidth_input = (.78/4)*window.innerWidth; // 78% of the screen (div width) / 4 images = 1/5
+outerHeight_input = outerWidth_input; // make a square image
+
+outerWidth_output = outerWidth_input; // These have to be the same size still. Need to figure out how to account
+outerHeight_output = outerHeight_input; // for different translations of the zoom rects if we want these to be different. - Matt
+
+// Make the input and output images
+show_image("data/Ht.txt", outerWidth_input, outerHeight_input, "Height", "#inputs");
+show_image("data/Po.txt", outerWidth_input, outerHeight_input, "Potential", "#inputs");
+show_image("data/Ph.txt", outerWidth_input, outerHeight_input, "Phase", "#inputs");
+show_image("data/Am.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
+show_output("data/Pl.txt", "data/Pl.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
+
+// ************** Generate the default tree diagram  *****************
+
+generate_tree("python/results/4_depth_1_trees_1_estimator.json");
+
+// ************** Generate the sliders  *****************
+depth_slider = d3.slider().scale(d3.scale.ordinal().domain([1,2,3,4,5]).rangePoints([0, 1], 0.5)).axis(d3.svg.axis()).snap(true).value(4);
+
+forest_slider = d3.slider().scale(d3.scale.ordinal().domain([1,2,3,4,5,6,7,8]).rangePoints([0, 1], 0.5)).axis(d3.svg.axis()).snap(true).value(4);
+    
+d3.select('.depth_slider').call(depth_slider);
+d3.select('.forest_slider').call(forest_slider);
+    
+depth_slider.on("slide", function(evt, value) {
+        update(value);
+    });
+    
+forest_slider.on("slide", function(evt, value) {
+        //update(value);
+    });
+
+// Value is the value of the slider (i.e. the Tree Depth or # of Trees etc.)
+function update(value) {
+    if(value >= 2 && value <= 4) {
+        var dataset = "data/Ht.txt";
+    } else {
+        var dataset = "data/Pl.txt";
+    }
+    
+    var tree = value + "_depth_4_trees_1_estimator.json";
+    
+    update_output(dataset, "data/Pl.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output")
+    
+    //update_tree("python/results/" + tree); // doesn't update
+    generate_tree("python/results/" + tree); 
+}
+
+
+// The variable trees_drawn is used to 
+// determine whether draw_tree is drawing the first
+// tree or re-drawing a new one. 
+// If it is a replacement tree, we want to delete the old one. 
+var trees_drawn = 1
+
+</script>
+</body>
+</html>
