@@ -19,19 +19,19 @@ def rules(tree, features, labels, node_index=0):
     """
     node = {}
 
-    print("inspect tree at depth {}".format(node_index))
+    #print("inspect tree at depth {}".format(node_index))
     
     left_child = tree.children_left[node_index]
     right_child = tree.children_right[node_index]
     
     if left_child == _tree.TREE_LEAF:
-        print("this node ({}) is a leaf".format(node_index)) 
-        print("tree.value[node_index]: {}".format(tree.value[node_index]))
+        #print("this node ({}) is a leaf".format(node_index)) 
+        #print("tree.value[node_index]: {}".format(tree.value[node_index]))
         count_labels = zip(tree.value[node_index, 0], labels)
         samples = tree.n_node_samples[node_index]
-        print("samples: {}".format(samples))
-        print("count labels: {}".format(count_labels))
-        print("count_labels: {}")
+        #print("samples: {}".format(samples))
+        #print("count labels: {}".format(count_labels))
+        #print("count_labels: {}")
         leaf_label = "{} points".format(samples)
         node["name"] = leaf_label
     else:
@@ -40,6 +40,7 @@ def rules(tree, features, labels, node_index=0):
         feature_name = features[feature_number]
         threshold = tree.threshold[node_index]
         threshold_rounded = round(threshold, 4)
+        
         # todo: round the values before storing them as strings. 
         node["name"] = '{} > {}'.format(feature_name, threshold_rounded)
         # recurse through function for right and left children
