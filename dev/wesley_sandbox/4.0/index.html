@@ -118,6 +118,7 @@ body {
 
 </style>
 <link rel="stylesheet" href="css/d3.slider.css" />
+<link rel="stylesheet" href="css/guiders.css" />
 <script type="text/javascript" src="./d3/d3.js"></script>
 <script type="text/javascript" src="./scripts/d3.slider.js"></script>
 <script type="text/javascript" src="./scripts/d3-scale.v0.7.min.js"></script>
@@ -125,6 +126,8 @@ body {
 <script type="text/javascript" src="./scripts/generate_images.js"></script>
 <script type="text/javascript" src="./scripts/generate_tree.js"></script>
 <script type="text/javascript" src="./scripts/slider.js"></script>
+<script type="text/javascript" src="./scripts/jquery.min.js"></script>
+<script type="text/javascript" src="./scripts/guiders.js"></script>
 </head>
 <body>
 <div id="interactions"><h1>Parameters</h1>
@@ -139,6 +142,67 @@ body {
 <div id="output"><h1>Outputs</h1></div>
 
 <script>
+
+// ************** Generate Guiders  *****************
+
+guiders.createGuider({
+  buttons: [{name: "Next"}],
+  description: "To exit the tutorial hit the escape key. Otherwise hit next!",
+  id: "first",
+  next: "second",
+  overlay:true,
+  title: "Welcome to the Decision Forests online teaching tutorial!",
+  closeOnEscape: true,
+  onClose: guiders.hideAll()
+}).show();
+
+guiders.createGuider({
+  attachTo: inputs,
+  position: 6,
+  buttons: [{name: "Next"}],
+  description: "Some words",
+  id: "second",
+  next: "third",
+  overlay:false,
+  closeOnEscape: true,
+  title: "Inputs"
+});
+
+guiders.createGuider({
+  attachTo: interactions,
+  position: 4,
+  buttons: [{name: "Next"}],
+  description: "Some words",
+  id: "third",
+  next: "fifth",
+  closeOnEscape: true,
+  overlay:false,
+  title: "Random Forest Parameters"
+});
+
+guiders.createGuider({
+  attachTo: tree,
+  position: 2,
+  buttons: [{name: "Next"}],
+  description: "Some words",
+  id: "fifth",
+  next: "sixth",
+  overlay:false,
+  closeOnEscape: true,
+  title: "Tree Structure"
+});
+
+guiders.createGuider({
+  attachTo: output,
+  position: 10,
+  buttons: [{name: "Close"}],
+  description: "Some words",
+  id: "sixth",
+  overlay:false,
+  closeOnEscape: true,
+  title: "Predicted Image"
+});
+
 
 // ************** Generate the images  *****************
 
