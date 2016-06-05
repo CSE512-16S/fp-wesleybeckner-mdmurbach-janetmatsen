@@ -153,7 +153,7 @@ show_image("data/Height.txt", outerWidth_input, outerHeight_input, "Height", "#i
 show_image("data/Potential.txt", outerWidth_input, outerHeight_input, "Potential", "#inputs");
 show_image("data/Phase.txt", outerWidth_input, outerHeight_input, "Phase", "#inputs");
 show_image("data/Amplitude.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
-show_output("python/results/1_depth_5_trees.txt", "python/results/1_depth_5_trees.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
+show_output("python/results/4_depth_5_trees.txt", "python/results/4_depth_5_trees.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
 
 // ************** Generate the default tree diagram  *****************
 
@@ -172,23 +172,21 @@ depth_slider.on("slide", function(evt, value) {
     });
     
 forest_slider.on("slide", function(evt, value) {
-        //update(value);
+        update_forest(value);
     });
 
 // Value is the value of the slider (i.e. the Tree Depth or # of Trees etc.)
 function update(value) {
-    if(value >= 2 && value <= 4) {
-        var dataset = "data/Height.txt";
-    } else {
-        var dataset = "data/Photoluminescence.txt";
-    }
-    var dataset = "python/results/" + value + "_depth_4_trees.txt";
+    var dataset = "python/results/" + value + "_depth_" + forest_slider.value() + "_trees.txt";
     var tree = value + "_depth_4_trees_1_estimator.json";
-    
-    update_output(dataset, dataset, outerWidth_output, outerHeight_output, "Photoluminescence", "#output")
-    
-    //update_tree("python/results/" + tree); // doesn't update
+    console.log(dataset);
+    update_output(dataset, dataset, outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
     generate_tree("python/results/" + tree); 
+}
+function update_forest(value) {
+    var dataset = "python/results/" + depth_slider.value() + "_depth_" + value + "_trees.txt";
+    console.log(dataset);
+    update_output(dataset, dataset, outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
 }
 
 

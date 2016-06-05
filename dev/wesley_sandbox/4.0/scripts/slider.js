@@ -1,10 +1,12 @@
 var num_tree;
 var depth;
+var id_check;
 
 function generate_slider(title, id, func) {
     var margin = {top: 30, right: 10, bottom: 30, left: 10},
         width = .18*window.innerWidth - margin.left - margin.right,
         height = 70 - margin.bottom - margin.top;;
+    id_check = id;
 
     var x = d3.scale.ordinal()
         .domain([1,2,3,4])
