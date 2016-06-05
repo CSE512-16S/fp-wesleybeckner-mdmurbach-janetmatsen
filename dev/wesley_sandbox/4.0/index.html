@@ -182,10 +182,10 @@ function update(value) {
     } else {
         var dataset = "data/Photoluminescence.txt";
     }
-    
+    var dataset = "python/results/" + value + "_depth_4_trees.txt";
     var tree = value + "_depth_4_trees_1_estimator.json";
     
-    update_output(dataset, "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output")
+    update_output(dataset, dataset, outerWidth_output, outerHeight_output, "Photoluminescence", "#output")
     
     //update_tree("python/results/" + tree); // doesn't update
     generate_tree("python/results/" + tree); 
