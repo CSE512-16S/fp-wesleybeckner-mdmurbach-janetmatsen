@@ -80,7 +80,8 @@ body {
 .link {
     fill: none;
     stroke: #ccc;
-    stroke-width: 2px;
+    //stroke-width: 2px; // use tree structure to set tree line width
+
 }
 
 .axis {
@@ -148,12 +149,11 @@ outerWidth_output = outerWidth_input; // These have to be the same size still. N
 outerHeight_output = outerHeight_input; // for different translations of the zoom rects if we want these to be different. - Matt
 
 // Make the input and output images
-show_image("data/Ht.txt", outerWidth_input, outerHeight_input, "Height", "#inputs");
-show_image("data/Po.txt", outerWidth_input, outerHeight_input, "Potential", "#inputs");
-show_image("data/Ph.txt", outerWidth_input, outerHeight_input, "Phase", "#inputs");
-show_image("data/Am.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
-show_output("data/Pl.txt", "python/results/1_depth_1_trees", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
-
+show_image("data/Height.txt", outerWidth_input, outerHeight_input, "Height", "#inputs");
+show_image("data/Potential.txt", outerWidth_input, outerHeight_input, "Potential", "#inputs");
+show_image("data/Phase.txt", outerWidth_input, outerHeight_input, "Phase", "#inputs");
+show_image("data/Amplitude.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
+show_output("python/results/1_depth_5_trees.txt", "python/results/1_depth_5_trees.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
 
 // ************** Generate the default tree diagram  *****************
 
@@ -178,14 +178,14 @@ forest_slider.on("slide", function(evt, value) {
 // Value is the value of the slider (i.e. the Tree Depth or # of Trees etc.)
 function update(value) {
     if(value >= 2 && value <= 4) {
-        var dataset = "data/Ht.txt";
+        var dataset = "data/Height.txt";
     } else {
-        var dataset = "data/Pl.txt";
+        var dataset = "data/Photoluminescence.txt";
     }
     
     var tree = value + "_depth_4_trees_1_estimator.json";
     
-    update_output(dataset, "data/Pl.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output")
+    update_output(dataset, "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output")
     
     //update_tree("python/results/" + tree); // doesn't update
     generate_tree("python/results/" + tree); 
