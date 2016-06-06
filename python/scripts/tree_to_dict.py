@@ -44,8 +44,9 @@ def rules(tree, features, labels, node_index=0):
         #print("count labels: {}".format(count_labels))
         #print("count_labels: {}")
         regression_value = round(tree.value[node_index][0][0], 2)
-        leaf_label = "predicts {} for {} points".format(regression_value,
-                                                        samples)
+        leaf_label = "predicts {} for {} " \
+                     "percent of the points".format(regression_value,
+                                                    round(percent, 1))
         node["name"] = leaf_label
 
 
