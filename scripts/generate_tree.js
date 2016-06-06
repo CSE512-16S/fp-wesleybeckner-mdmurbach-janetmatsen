@@ -28,7 +28,7 @@ function generate_tree(tree_json_path) {
 
   var tree = d3.layout.tree()
     //.separation(function(a, b) { return (a.parent == b.parent ? 1 : 2)/ a.depth; })
-    .size([width*0.8, height]) // size option A: fixed width height/width for whole tree
+    .size([width*0.9, height]) // size option A: fixed width height/width for whole tree
     //.nodeSize([3, 3])  // size option B: fixed spacing between nodes
     ; 
 
@@ -72,8 +72,9 @@ function generate_tree(tree_json_path) {
     var hoverLabelOn = function() {
       d3.select(this).append("text")
         .classed('info', true)
-        .attr('x', 20)  // 20 pixels to the right
-        .attr('y', 10)  // 10 pixels under the circle
+        .attr('x', 0)  // no offset (will be centered b/c of "middle" below
+        .attr('y', -10)  // 10 pixels above the circle
+        .attr('text-anchor', 'middle') // center test
         .text(function(d) {return d.name;})
       ;}
 
