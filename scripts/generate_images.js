@@ -59,6 +59,7 @@ function show_image(filename, outerWidth, outerHeight, title, id) {
           .attr("y", function(d, j) {return y(Math.floor(j/N)); }) // row number
           .attr("width", x(1) - x(0))
           .attr("height", y(1) - y(0))
+          .datum(function(d) {return d})
           .style("fill", function(d) { return z(d); })
           .on("mouseover", function(d,i){
               data = d3.select(this);
@@ -76,6 +77,10 @@ function show_image(filename, outerWidth, outerHeight, title, id) {
                       .attr("height", 16*(y(1) - y(0)))                  
                       .style("fill", t.style.fill)
                       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                  d3.select(d).append("text")
+                      .attr("id", "values")
+                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                      .text(t.__data__);
               })
               
               d3.selectAll("#output svg")[0].forEach( function(d, i) {
@@ -93,6 +98,7 @@ function show_image(filename, outerWidth, outerHeight, title, id) {
           .on("mouseout", function(){
                // remove the added rectangles (class = zoom)
                d3.selectAll("#inputs").selectAll(".zoom").remove()
+               d3.selectAll("#values").remove();
                d3.selectAll("#output").selectAll(".zoom").remove()
                });
                
