@@ -59,6 +59,7 @@ function show_image(filename, outerWidth, outerHeight, title, id) {
           .attr("y", function(d, j) {return y(Math.floor(j/N)); }) // row number
           .attr("width", x(1) - x(0))
           .attr("height", y(1) - y(0))
+          .datum(function(d) {return d})
           .style("fill", function(d) { return z(d); })
           .on("mouseover", function(d,i){
               data = d3.select(this);
@@ -70,31 +71,47 @@ function show_image(filename, outerWidth, outerHeight, title, id) {
                   d3.select(d).append("rect")
                       .attr("class", "zoom")
                       .attr("id", "zoom_" + i)
-                      .attr("x", data.attr("x") - 16*(x(1) - x(0))/2)
-                      .attr("y", data.attr("y") - 16*(y(1) - y(0))/2)
-                      .attr("width", 16*(x(1) - x(0)))
-                      .attr("height", 16*(y(1) - y(0)))                  
+                      .attr("x", data.attr("x"))
+                      .attr("y", data.attr("y"))
                       .style("fill", t.style.fill)
                       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                      .attr("width", 0)
+                      .attr("height", 0)
+                      .transition().duration(1000)
+                      .attr("width", 16*(x(1) - x(0)))
+                      .attr("height", 16*(y(1) - y(0)))
+                      .attr("x", data.attr("x") - 16*(x(1) - x(0))/2)
+                      .attr("y", data.attr("y") - 16*(y(1) - y(0))/2)                      
+                  d3.select(d).append("text")
+                      .attr("id", "values")
+                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                      .text(t.__data__);
               })
               
               d3.selectAll("#output svg")[0].forEach( function(d, i) {
                   t = d3.selectAll("#output").selectAll(".tile")[0][i*(N*M) + index];
                   d3.select(d).append("rect")
                       .attr("class", "zoom")
-                      .attr("x", data.attr("x") - 16*(x(1) - x(0))/2) // column number
-                      .attr("y", data.attr("y") - 16*(y(1) - y(0))/2) // row number
-                      .attr("width", 16*(x(1) - x(0)))
-                      .attr("height", 16*(y(1) - y(0)))                  
+                      .attr("x", data.attr("x"))
+                      .attr("y", data.attr("y"))
                       .style("fill", t.style.fill)
                       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                      .attr("width", 0)
+                      .attr("height", 0)
+                      .transition().duration(1000)
+                      .attr("width", 16*(x(1) - x(0)))
+                      .attr("height", 16*(y(1) - y(0)))
+                      .attr("x", data.attr("x") - 16*(x(1) - x(0))/2)
+                      .attr("y", data.attr("y") - 16*(y(1) - y(0))/2) 
               })
                 })
           .on("mouseout", function(){
                // remove the added rectangles (class = zoom)
                d3.selectAll("#inputs").selectAll(".zoom").remove()
+               d3.selectAll("#values").remove();
                d3.selectAll("#output").selectAll(".zoom").remove()
-               });
+               })
+           .transition();
                
       svg.append("text")
         .attr("class", "title")
