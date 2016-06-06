@@ -482,8 +482,8 @@ var guiders = (function($) {
     });
     $(".guider").fadeOut("fast");
     var currentGuider = guiders._guiders[guiders._currentGuiderID];
-    if (currentGuider && currentGuider.highlight) {
-    	guiders._dehighlightElement(currentGuider.highlight);
+    if (currentGuider && currentGuider.highlight && currentGuider.attachTo) {
+    guiders._dehighlightElement(currentGuider.attachTo);
     }
     if (typeof omitHidingOverlay !== "undefined" && omitHidingOverlay === true) {
       // do nothing for now
