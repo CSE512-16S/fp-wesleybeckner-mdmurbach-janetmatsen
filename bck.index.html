@@ -118,7 +118,6 @@ body {
 
 </style>
 <link rel="stylesheet" href="css/d3.slider.css" />
-<link rel="stylesheet" href="css/guiders.css" />
 <script type="text/javascript" src="./d3/d3.js"></script>
 <script type="text/javascript" src="./scripts/d3.slider.js"></script>
 <script type="text/javascript" src="./scripts/d3-scale.v0.7.min.js"></script>
@@ -126,8 +125,6 @@ body {
 <script type="text/javascript" src="./scripts/generate_images.js"></script>
 <script type="text/javascript" src="./scripts/generate_tree.js"></script>
 <script type="text/javascript" src="./scripts/slider.js"></script>
-<script type="text/javascript" src="./scripts/jquery.min.js"></script>
-<script type="text/javascript" src="./scripts/guiders.js"></script>
 </head>
 <body>
 <div id="interactions"><h1>Parameters</h1>
@@ -143,67 +140,6 @@ body {
 
 <script>
 
-// ************** Generate Guiders  *****************
-
-guiders.createGuider({
-  buttons: [{name: "Next"}],
-  description: "To exit the tutorial hit the escape key. Otherwise hit next!",
-  id: "first",
-  next: "second",
-  overlay:true,
-  title: "Welcome to the Decision Forests online teaching tutorial!",
-  closeOnEscape: true,
-  onClose: guiders.hideAll()
-}).show();
-
-guiders.createGuider({
-  attachTo: inputs,
-  position: 6,
-  buttons: [{name: "Next"}],
-  description: "In this particular dataset, we are using four atomic force microscopy images of a perovskite solar cell to predict the spatial mapping of the material’s photoluminescence. As you mouse over the pixels in any image, you can see where this portion of the material ‘maps’ to the other images. The top portions of these images represent the training data, while the bottom portions are the pixels our learning algorithm will use to make a prediction.",
-  id: "second",
-  next: "third",
-  overlay:false,
-  closeOnEscape: true,
-  title: "Inputs"
-});
-
-guiders.createGuider({
-  attachTo: interactions,
-  position: 4,
-  buttons: [{name: "Next"}],
-  description: "In random forests learning algorithms, there are two primary parameters a user can specify: depth and the number of trees in the forest. You can adjust these slide bars to see how they affect the performance of your learning algorithm.",
-  id: "third",
-  next: "fifth",
-  closeOnEscape: true,
-  overlay:false,
-  title: "Random Forest Parameters"
-});
-
-guiders.createGuider({
-  attachTo: tree,
-  position: 2,
-  buttons: [{name: "Next"}],
-  description: "In this space you will see one of the trees that are generated when you run the learning algorithm. In the event that you choose a single tree in the slider bar, that tree is representative of the entire mapping from input features to output! When multiple trees are generated, the mapping is the result of averaging the ensemble of trees. ",
-  id: "fifth",
-  next: "sixth",
-  overlay:false,
-  closeOnEscape: true,
-  title: "Tree Structure"
-});
-
-guiders.createGuider({
-  attachTo: output,
-  position: 10,
-  buttons: [{name: "Close"}],
-  description: "Here you can see the results of the learning algorithm. The top portion of the image represents the training data, while the bottom half of the image is the predicted output for a separate area of the material. ",
-  id: "sixth",
-  overlay:false,
-  closeOnEscape: true,
-  title: "Predicted Image"
-});
-
-
 // ************** Generate the images  *****************
 
 outerWidth_input = (.78/4)*window.innerWidth; // 78% of the screen (div width) / 4 images = 1/5
@@ -217,7 +153,7 @@ show_image("data/Height.txt", outerWidth_input, outerHeight_input, "Height", "#i
 show_image("data/Potential.txt", outerWidth_input, outerHeight_input, "Potential", "#inputs");
 show_image("data/Phase.txt", outerWidth_input, outerHeight_input, "Phase", "#inputs");
 show_image("data/Amplitude.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
-show_output("python/results/4_depth_5_trees.txt", "python/results/4_depth_5_trees.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
+show_output("data/Photoluminescence.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
 
 // ************** Generate the default tree diagram  *****************
 
@@ -236,21 +172,23 @@ depth_slider.on("slide", function(evt, value) {
     });
     
 forest_slider.on("slide", function(evt, value) {
-        update_forest(value);
+        //update(value);
     });
 
 // Value is the value of the slider (i.e. the Tree Depth or # of Trees etc.)
 function update(value) {
-    var dataset = "python/results/" + value + "_depth_" + forest_slider.value() + "_trees.txt";
+    if(value >= 2 && value <= 4) {
+        var dataset = "data/Height.txt";
+    } else {
+        var dataset = "data/Photoluminescence.txt";
+    }
+    
     var tree = value + "_depth_4_trees_1_estimator.json";
-    console.log(dataset);
-    update_output(dataset, dataset, outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
+    
+    update_output(dataset, "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output")
+    
+    //update_tree("python/results/" + tree); // doesn't update
     generate_tree("python/results/" + tree); 
-}
-function update_forest(value) {
-    var dataset = "python/results/" + depth_slider.value() + "_depth_" + value + "_trees.txt";
-    console.log(dataset);
-    update_output(dataset, dataset, outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
 }
 
 

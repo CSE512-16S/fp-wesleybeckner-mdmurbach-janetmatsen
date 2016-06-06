@@ -28,10 +28,10 @@ function show_image(filename, outerWidth, outerHeight, title, id) {
       });
       
       // Take a subsection of the input data using .slice() method
-      var col_start = 40;
-      var col_end = 104;
-      var row_start = 40;
-      var row_end = 104;
+      var col_start = 93;
+      var col_end = 157;
+      var row_start = 93;
+      var row_end = 157;
       
       var data = [];
       
@@ -138,10 +138,10 @@ function show_output(filename_predict, filename_true, outerWidth, outerHeight, t
           });          
           
           // Take a subsection of the input data using .slice() method
-          var col_start = 40;
-          var col_end = 104;
-          var row_start = 40;
-          var row_end = 104;
+          var col_start = 93;
+          var col_end = 157;
+          var row_start = 93;
+          var row_end = 157;
           
           var data = [];
           
@@ -248,10 +248,10 @@ function update_output(filename_predict, filename_true, outerWidth, outerHeight,
           });          
           
           // Take a subsection of the input data using .slice() method
-          var col_start = 40;
-          var col_end = 104;
-          var row_start = 40;
-          var row_end = 104;
+          var col_start = 93;
+          var col_end = 157;
+          var row_start = 93;
+          var row_end = 157;
           
           var data = [];
           
