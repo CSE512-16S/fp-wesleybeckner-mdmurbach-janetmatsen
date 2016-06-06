@@ -47,9 +47,6 @@ function generate_tree(tree_json_path) {
     update(root);
   });
 
-  // Global Variables:
-  NODE_OPACITY = 0.3
-
   // ?? Is this continually being called?  
   function update(source) {
 
@@ -112,7 +109,6 @@ function generate_tree(tree_json_path) {
     // Plot circles, colored by the decision being made
     nodeEnter.append("circle")
       .attr("r", 6)
-      //.attr("opacity", NODE_OPACITY)
       // set node opacity based on traffic  
       .attr("opacity", function(d) { return 0.1 + d.percent*0.9/100})
       .style("fill", function(d) { return color_for_node(d.name); })
