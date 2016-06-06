@@ -1,3 +1,3 @@
 [
-{"number of samples": "19914", "children": [{"number of samples": "3980", "percent": 19.99, "name": "3980 points"}, {"number of samples": "15934", "percent": 80.01, "name": "15934 points"}], "percent": 100.0, "name": "Potential > 0.2422"}
+{"children": [{"number of samples": "3675", "name": "predicts 0.37 for 3675 points", "percent": 18.42}, {"number of samples": "16277", "name": "predicts 0.73 for 16277 points", "percent": 81.58}], "number of samples": "19952", "name": "Potential > 0.2444", "percent": 100.0}
 ]

@@ -2,6 +2,10 @@ import json
 import sklearn 
 from sklearn.tree import _tree
 
+# code from sklearn tree --> graphviz function:
+# https://github.com/scikit-learn/scikit-learn/blob/51a765a/sklearn/tree/export.py#L63
+
+# Useful blogs:
 # from http://planspace.org/20151129-see_sklearn_trees_with_d3/
 # http://aysent.github.io/2015/11/08/random-forest-leaf-visualization.html
 
@@ -39,7 +43,9 @@ def rules(tree, features, labels, node_index=0):
         #print("samples: {}".format(samples))
         #print("count labels: {}".format(count_labels))
         #print("count_labels: {}")
-        leaf_label = "{} points".format(samples)
+        regression_value = round(tree.value[node_index][0][0], 2)
+        leaf_label = "predicts {} for {} points".format(regression_value,
+                                                        samples)
         node["name"] = leaf_label
 
 
