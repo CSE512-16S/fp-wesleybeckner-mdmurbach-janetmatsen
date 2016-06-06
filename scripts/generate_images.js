@@ -69,6 +69,7 @@ function show_image(filename, outerWidth, outerHeight, title, id) {
                   t = d3.selectAll("#inputs").selectAll(".tile")[0][i*(N*M) + index];
                   d3.select(d).append("rect")
                       .attr("class", "zoom")
+                      .attr("id", "zoom_" + i)
                       .attr("x", data.attr("x") - 16*(x(1) - x(0))/2)
                       .attr("y", data.attr("y") - 16*(y(1) - y(0))/2)
                       .attr("width", 16*(x(1) - x(0)))
@@ -182,6 +183,7 @@ function show_output(filename_predict, filename_true, outerWidth, outerHeight, t
                       t = d3.selectAll("#inputs").selectAll(".tile")[0][i*(N*M) + index];
                       d3.select(d).append("rect")
                           .attr("class", "zoom")
+                          .attr("id", "zoom_" + i)
                           .attr("x", data.attr("x") - 16*(x(1) - x(0))/2)
                           .attr("y", data.attr("y") - 16*(y(1) - y(0))/2)
                           .attr("width", 16*(x(1) - x(0)))
@@ -295,6 +297,7 @@ function update_output(filename_predict, filename_true, outerWidth, outerHeight,
                       t = d3.selectAll("#inputs").selectAll(".tile")[0][i*(N*M) + index];
                       d3.select(d).append("rect")
                           .attr("class", "zoom")
+                          .attr("id", "zoom_" + i)
                           .attr("x", data.attr("x") - 16*(x(1) - x(0))/2)
                           .attr("y", data.attr("y") - 16*(y(1) - y(0))/2)
                           .attr("width", 16*(x(1) - x(0)))
