@@ -27,10 +27,12 @@ function generate_tree(tree_json_path) {
   // }
 
   var tree = d3.layout.tree()
-     .size([width, height]) // size option A: fixed width height/width for whole tree
-     //.nodeSize([3, 3])  // size option B: fixed spacing between nodes
-     ; 
+    //.separation(function(a, b) { return (a.parent == b.parent ? 1 : 2)/ a.depth; })
+    .size([width*0.8, height]) // size option A: fixed width height/width for whole tree
+    //.nodeSize([3, 3])  // size option B: fixed spacing between nodes
+    ; 
 
+  // lines to connect each parent/child node pair. 
   var diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.x, d.y]; });
 
