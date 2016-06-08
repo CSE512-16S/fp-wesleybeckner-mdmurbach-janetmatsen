@@ -211,6 +211,10 @@ function show_output(filename_predict, filename_true, outerWidth, outerHeight, t
                           .attr("height", 16*(y(1) - y(0)))                  
                           .style("fill", t.style.fill)
                           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                      d3.select(d).append("text")
+                          .attr("id", "values")
+                          .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                          .text(t.__data__);
                   })
                   
                   d3.selectAll("#output svg")[0].forEach( function(d, i) {
@@ -223,11 +227,16 @@ function show_output(filename_predict, filename_true, outerWidth, outerHeight, t
                           .attr("height", 16*(y(1) - y(0)))                  
                           .style("fill", t.style.fill)
                           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                      d3.select(d).append("text")
+                          .attr("id", "values")
+                          .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                          .text(t.__data__);
                   })
                     })
               .on("mouseout", function(){
                    // remove the added rectangles (class = zoom)
                    d3.selectAll("#inputs").selectAll(".zoom").remove()
+                   d3.selectAll("#values").remove();
                    d3.selectAll("#output").selectAll(".zoom").remove()
                    });
                    
