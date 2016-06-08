@@ -102,7 +102,11 @@ function show_image(filename, outerWidth, outerHeight, title, id) {
                       .attr("width", 16*(x(1) - x(0)))
                       .attr("height", 16*(y(1) - y(0)))
                       .attr("x", data.attr("x") - 16*(x(1) - x(0))/2)
-                      .attr("y", data.attr("y") - 16*(y(1) - y(0))/2) 
+                      .attr("y", data.attr("y") - 16*(y(1) - y(0))/2)
+                  d3.select(d).append("text")
+                      .attr("id", "values")
+                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                      .text(t.__data__);
               })
                 })
           .on("mouseout", function(){
