@@ -1,6 +1,8 @@
 # fp-wesleybeckner-mdmurbach-janetmatsen
 
 This CSE 512 project demonstrates use of decision trees in random forests as a teaching tool.  
+The live visualization is at [wesleybeckner-mdmurbach-janetmatsen](http://cse512-16s.github.io/fp-wesleybeckner-mdmurbach-janetmatsen/)
+
 ![Screenshot of project](https://github.com/CSE512-16S/fp-wesleybeckner-mdmurbach-janetmatsen/blob/master/images/screenshot.png)
 
 ## Decision Trees and Random Forests for Photoluminescence Prediction
