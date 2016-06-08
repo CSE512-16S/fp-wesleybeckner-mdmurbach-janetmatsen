@@ -72,13 +72,13 @@ body {
 }
 
 #tree {
-    width: 65%;
+    width: 59%;
     float: left;
     text-align: center;
 }
 
 #output {
-    width: 30%;
+    width: 40%;
     float: right;
     text-align: center;
 }
@@ -155,7 +155,7 @@ body {
 </div>
 <div id="inputs"><h1>Features</h1></div>
 <div id="tree"><h1>Tree</h1></div>
-<div id="output"><h1>Outputs</h1></div>
+<div id="output"><h1>Output: </h1><p class="title">Photoluminescence</p></div>
 
 <script>
 
@@ -240,8 +240,8 @@ show_image("data/Height.txt", outerWidth_input, outerHeight_input, "Height", "#i
 show_image("data/Potential.txt", outerWidth_input, outerHeight_input, "Potential", "#inputs");
 show_image("data/Phase.txt", outerWidth_input, outerHeight_input, "Phase", "#inputs");
 show_image("data/Amplitude.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
-show_output("python/results/4_depth_5_trees.txt", "python/results/4_depth_5_trees.txt", outerWidth_output, outerHeight_output, "Photoluminescence (top:actual, bottom:predicted)", "#output");
-show_output("data/Photoluminescence.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence (actual)", "#output");
+show_output("data/Photoluminescence.txt", "python/results/4_depth_5_trees.txt", outerWidth_output, outerHeight_output, "(top:actual, bottom:predicted)", "#output");
+show_output("data/Photoluminescence.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "(actual)", "#output");
 
 // ************** Generate the default tree diagram  *****************
 
@@ -268,7 +268,7 @@ function update(value) {
     var dataset = "python/results/" + value + "_depth_" + forest_slider.value() + "_trees.txt";
     var tree = value + "_depth_4_trees_1_estimator.json";
     console.log(dataset);
-    update_output(dataset, dataset, outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
+    update_output("data/Photoluminescence.txt", dataset, outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
     generate_tree("python/results/" + tree); 
 }
 function update_forest(value) {
