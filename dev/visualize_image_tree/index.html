@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!-- Origin: http://www.d3noob.org/2014/01/tree-diagrams-in-d3js_11.html --!>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>sklearn Tree </title>
+
+    <style>
+
+ .node circle {
+   //fill: #6D7B8D;
+   //stroke: #6D7B8D;
+   fill: #f1f1f1;
+   //stroke: #f1f1f1;
+   //stroke-width: 1px;
+ }
+
+ .node text { font: 12px sans-serif; }
+
+ .link {
+   fill: none;
+   stroke: #ccc;
+   stroke-width: 2px;
+ }
+ 
+    </style>
+
+  </head>
+
+  <body>
+
+<!-- load the d3.js library --> 
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<!-- load the helper .js files --> 
+<script type="text/javascript"src="scripts/tree_styling.js"></script>
+<script type="text/javascript"src="scripts/generate_tree.js"></script>
+ 
+<script>
+
+generate_tree("data/sample_json_from_sklearn.json");
+//generate_tree("data/3_depth_3_trees_0_estimator.json");
+
+</script>
+ 
+  </body>
+</html>

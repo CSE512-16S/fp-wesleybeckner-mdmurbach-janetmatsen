@@ -1,0 +1,3 @@
+[
+{"children": [{"children": [{"number of samples": "1968", "name": "predicts 0.3 for 1968 points", "percent": 9.83}, {"number of samples": "1832", "name": "predicts 0.46 for 1832 points", "percent": 9.15}], "number of samples": "3800", "name": "Potential > 0.2629", "percent": 18.99}, {"children": [{"number of samples": "15680", "name": "predicts 0.74 for 15680 points", "percent": 78.35}, {"number of samples": "532", "name": "predicts 0.37 for 532 points", "percent": 2.66}], "number of samples": "16212", "name": "Potential > 0.1267", "percent": 81.01}], "number of samples": "20012", "name": "Potential > 0.244", "percent": 100.0}
+]

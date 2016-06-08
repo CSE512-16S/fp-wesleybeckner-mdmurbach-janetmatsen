@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 10px sans-serif;
+  width: 100%;
+  display: block;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.tile, .zoom {
+  shape-rendering: crispEdges;
+}
+
+.zoom {
+  pointer-events: none;
+  stroke: #000;
+  stroke-width:2.5px;
+}
+
+.cell-hover {
+        stroke: #F00;
+        stroke-width:2.5px;   
+      }
+
+.title {
+    font-size: 14px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#inputs {
+    width: 78%;
+    float: right;
+    white-space: nowrap; <!-- keep everything on one line -->
+    vertical-align: top;
+    overflow: hidden;
+    text-align: center;
+}
+
+#interactions {
+    width: 18%;
+    float: left;
+    text-align: center;
+}
+
+#tree {
+    width: 65%;
+    float: left;
+    text-align: center;
+}
+
+#output {
+    width: 30%;
+    float: right;
+    text-align: center;
+}
+
+.node circle {
+    fill: #6D7B8D;
+    stroke: #6D7B8D;
+    //fill: #f1f1f1;
+    //stroke: #f1f1f1;
+    //stroke-width: 1px;
+}
+
+.node text { font: 12px sans-serif; }
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
+}
+
+.axis {
+  font: 10px sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.axis .domain {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+  stroke-width: 10px;
+  stroke-linecap: round;
+}
+
+.axis .halo {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 8px;
+  stroke-linecap: round;
+}
+
+.slider .handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: .5;
+  stroke-width: 1.25px;
+  cursor: crosshair;
+}
+
+
+
+</style>
+<script type="text/javascript" src="./scripts/d3-queue.js"></script>
+<script type="text/javascript" src="./d3/d3.js"></script>
+<script type="text/javascript" src="./scripts/d3-scale.v0.7.min.js"></script>
+<script type="text/javascript" src="./scripts/tree_styling.js"></script>
+<script type="text/javascript" src="./scripts/generate_images.js"></script>
+<script type="text/javascript" src="./scripts/generate_tree.js"></script>
+<script type="text/javascript" src="./scripts/slider.js"></script>
+</head>
+<body>
+<div id="interactions"><h1>Parameters</h1>
+    <div class="depth_slider"></div>
+    <div class="forest_slider"></div>
+</div>
+<div id="inputs"><h1>Features</h1></div>
+<div id="tree"><h1>Tree</h1></div>
+<div id="output"><h1>Outputs</h1></div>
+<script>
+// ************** Load Data ****************************
+var test = d3_queue.queue()
+    .defer(d3.json, "../../../python/results/1_depth_1_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_2_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_2_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_3_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_3_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_3_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_4_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_4_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_4_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_4_trees_4_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_5_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_5_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_5_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_5_trees_4_estimator.json")
+    .defer(d3.json, "../../../python/results/1_depth_5_trees_5_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_1_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_2_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_2_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_3_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_3_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_3_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_4_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_4_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_4_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_4_trees_4_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_5_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_5_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_5_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_5_trees_4_estimator.json")
+    .defer(d3.json, "../../../python/results/2_depth_5_trees_5_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_1_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_1_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_2_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_2_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_3_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_3_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_3_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_4_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_4_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_4_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_4_trees_4_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_5_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_5_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_5_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_5_trees_4_estimator.json")
+    .defer(d3.json, "../../../python/results/3_depth_5_trees_5_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_1_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_1_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_1_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_2_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_2_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_2_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_3_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_3_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_3_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_4_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_4_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_4_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_4_trees_4_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_5_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_5_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_5_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_5_trees_4_estimator.json")
+    .defer(d3.json, "../../../python/results/4_depth_5_trees_5_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_1_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_1_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_1_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_1_trees_4_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_2_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_2_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_2_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_2_trees_4_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_3_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_3_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_3_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_3_trees_4_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_4_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_4_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_4_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_4_trees_4_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_5_trees_1_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_5_trees_2_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_5_trees_3_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_5_trees_4_estimator.json")
+    .defer(d3.json, "../../../python/results/5_depth_5_trees_5_estimator.json")
+    .awaitAll(function(error, result) {
+	if (error) throw error;
+	console.log(result);
+	result.forEach(function(d) {
+	return d
+	});
+	});
+
+var thisthing = (d3.json, "../../../python/results/1_depth_1_trees_1_estimator.json")
+ 
+
+function analyze(error, one_depth_one_trees_one_estimator, one_depth_two_trees_one_estimator, one_depth_two_trees_two_estimator, one_depth_three_trees_one_estimator, one_depth_three_trees_two_estimator, one_depth_three_trees_three_estimator, one_depth_four_trees_one_estimator, one_depth_four_trees_two_estimator, one_depth_four_trees_three_estimator, one_depth_four_trees_four_estimator, one_depth_five_trees_one_estimator, one_depth_five_trees_two_estimator, one_depth_five_trees_three_estimator, one_depth_five_trees_four_estimator, one_depth_five_trees_five_estimator, two_depth_one_trees_one_estimator, two_depth_two_trees_one_estimator, two_depth_two_trees_two_estimator, two_depth_three_trees_one_estimator, two_depth_three_trees_two_estimator, two_depth_three_trees_three_estimator, two_depth_four_trees_one_estimator, two_depth_four_trees_two_estimator, two_depth_four_trees_three_estimator, two_depth_four_trees_four_estimator, two_depth_five_trees_one_estimator, two_depth_five_trees_two_estimator, two_depth_five_trees_three_estimator, two_depth_five_trees_four_estimator, two_depth_five_trees_five_estimator, three_depth_one_trees_one_estimator, three_depth_one_trees_two_estimator, three_depth_two_trees_one_estimator, three_depth_two_trees_two_estimator, three_depth_three_trees_one_estimator, three_depth_three_trees_two_estimator, three_depth_three_trees_three_estimator, three_depth_four_trees_one_estimator, three_depth_four_trees_two_estimator, three_depth_four_trees_three_estimator, three_depth_four_trees_four_estimator, three_depth_five_trees_one_estimator, three_depth_five_trees_two_estimator, three_depth_five_trees_three_estimator, three_depth_five_trees_four_estimator, three_depth_five_trees_five_estimator, four_depth_one_trees_one_estimator, four_depth_one_trees_two_estimator, four_depth_one_trees_three_estimator, four_depth_two_trees_one_estimator, four_depth_two_trees_two_estimator, four_depth_two_trees_three_estimator, four_depth_three_trees_one_estimator, four_depth_three_trees_two_estimator, four_depth_three_trees_three_estimator, four_depth_four_trees_one_estimator, four_depth_four_trees_two_estimator, four_depth_four_trees_three_estimator, four_depth_four_trees_four_estimator, four_depth_five_trees_one_estimator, four_depth_five_trees_two_estimator, four_depth_five_trees_three_estimator, four_depth_five_trees_four_estimator, four_depth_five_trees_five_estimator, five_depth_one_trees_one_estimator, five_depth_one_trees_two_estimator, five_depth_one_trees_three_estimator, five_depth_one_trees_four_estimator, five_depth_two_trees_one_estimator, five_depth_two_trees_two_estimator, five_depth_two_trees_three_estimator, five_depth_two_trees_four_estimator, five_depth_three_trees_one_estimator, five_depth_three_trees_two_estimator, five_depth_three_trees_three_estimator, five_depth_three_trees_four_estimator, five_depth_four_trees_one_estimator, five_depth_four_trees_two_estimator, five_depth_four_trees_three_estimator, five_depth_four_trees_four_estimator, five_depth_five_trees_one_estimator, five_depth_five_trees_two_estimator, five_depth_five_trees_three_estimator, five_depth_five_trees_four_estimator, five_depth_five_trees_five_estimator) {
+    if(error) {console.log(error); } 
+
+    console.log(one_depth_one_trees_one_estimator[0]);  
+    console.log(one_depth_two_trees_one_estimator[0]);
+    console.log(one_depth_two_trees_two_estimator[0]);
+    console.log(one_depth_three_trees_one_estimator[0]);
+    console.log(one_depth_three_trees_two_estimator[0]);
+    console.log(one_depth_three_trees_three_estimator[0]);
+    console.log(one_depth_four_trees_one_estimator[0]);
+    console.log(one_depth_four_trees_two_estimator[0]);
+    console.log(one_depth_four_trees_three_estimator[0]);
+    console.log(one_depth_four_trees_four_estimator[0]);
+    console.log(one_depth_five_trees_one_estimator[0]);
+    console.log(one_depth_five_trees_two_estimator[0]);
+    console.log(one_depth_five_trees_three_estimator[0]);
+    console.log(one_depth_five_trees_four_estimator[0]);
+    console.log(one_depth_five_trees_five_estimator[0]);
+    console.log(two_depth_one_trees_one_estimator[0]);
+    console.log(two_depth_two_trees_one_estimator[0]);
+    console.log(two_depth_two_trees_two_estimator[0]);
+    console.log(two_depth_three_trees_one_estimator[0]);
+    console.log(two_depth_three_trees_two_estimator[0]);
+    console.log(two_depth_three_trees_three_estimator[0]);
+    console.log(two_depth_four_trees_one_estimator[0]);
+    console.log(two_depth_four_trees_two_estimator[0]);
+    console.log(two_depth_four_trees_three_estimator[0]);
+    console.log(two_depth_four_trees_four_estimator[0]);
+    console.log(two_depth_five_trees_one_estimator[0]);
+    console.log(two_depth_five_trees_two_estimator[0]);
+    console.log(two_depth_five_trees_three_estimator[0]);
+    console.log(two_depth_five_trees_four_estimator[0]);
+    console.log(two_depth_five_trees_five_estimator[0]);
+    console.log(three_depth_one_trees_one_estimator[0]);
+    console.log(three_depth_one_trees_two_estimator[0]);
+    console.log(three_depth_two_trees_one_estimator[0]);
+    console.log(three_depth_two_trees_two_estimator[0]);
+    console.log(three_depth_three_trees_one_estimator[0]);
+    console.log(three_depth_three_trees_two_estimator[0]);
+    console.log(three_depth_three_trees_three_estimator[0]);
+    console.log(three_depth_four_trees_one_estimator[0]);
+    console.log(three_depth_four_trees_two_estimator[0]);
+    console.log(three_depth_four_trees_three_estimator[0]);
+    console.log(three_depth_four_trees_four_estimator[0]);
+    console.log(three_depth_five_trees_one_estimator[0]);
+    console.log(three_depth_five_trees_two_estimator[0]);
+    console.log(three_depth_five_trees_three_estimator[0]);
+    console.log(three_depth_five_trees_four_estimator[0]);
+    console.log(three_depth_five_trees_five_estimator[0]);
+    console.log(four_depth_one_trees_one_estimator[0]);
+    console.log(four_depth_one_trees_two_estimator[0]);
+    console.log(four_depth_one_trees_three_estimator[0]);
+    console.log(four_depth_two_trees_one_estimator[0]);
+    console.log(four_depth_two_trees_two_estimator[0]);
+    console.log(four_depth_two_trees_three_estimator[0]);
+    console.log(four_depth_three_trees_one_estimator[0]);
+    console.log(four_depth_three_trees_two_estimator[0]);
+    console.log(four_depth_three_trees_three_estimator[0]);
+    console.log(four_depth_four_trees_one_estimator[0]);
+    console.log(four_depth_four_trees_two_estimator[0]);
+    console.log(four_depth_four_trees_three_estimator[0]);
+    console.log(four_depth_four_trees_four_estimator[0]);
+    console.log(four_depth_five_trees_one_estimator[0]);
+    console.log(four_depth_five_trees_two_estimator[0]);
+    console.log(four_depth_five_trees_three_estimator[0]);
+    console.log(four_depth_five_trees_four_estimator[0]);
+    console.log(four_depth_five_trees_five_estimator[0]);
+    console.log(five_depth_one_trees_one_estimator[0]);
+    console.log(five_depth_one_trees_two_estimator[0]);
+    console.log(five_depth_one_trees_three_estimator[0]);
+    console.log(five_depth_one_trees_four_estimator[0]);
+    console.log(five_depth_two_trees_one_estimator[0]);
+    console.log(five_depth_two_trees_two_estimator[0]);
+    console.log(five_depth_two_trees_three_estimator[0]);
+    console.log(five_depth_two_trees_four_estimator[0]);
+    console.log(five_depth_three_trees_one_estimator[0]);
+    console.log(five_depth_three_trees_two_estimator[0]);
+    console.log(five_depth_three_trees_three_estimator[0]);
+    console.log(five_depth_three_trees_four_estimator[0]);
+    console.log(five_depth_four_trees_one_estimator[0]);
+    console.log(five_depth_four_trees_two_estimator[0]);
+    console.log(five_depth_four_trees_three_estimator[0]);
+    console.log(five_depth_four_trees_four_estimator[0]);
+    console.log(five_depth_five_trees_one_estimator[0]);
+    console.log(five_depth_five_trees_two_estimator[0]);
+    console.log(five_depth_five_trees_three_estimator[0]);
+    console.log(five_depth_five_trees_four_estimator[0]);
+    console.log(five_depth_five_trees_five_estimator[0]);
+}
+
+// ************** Generate the images  *****************
+
+outerWidth_input = (.78/4)*window.innerWidth; // 78% of the screen (div width) / 4 images = 1/5
+outerHeight_input = outerWidth_input; // make a square image
+
+outerWidth_output = outerWidth_input; // These have to be the same size still. Need to figure out how to account
+outerHeight_output = outerHeight_input; // for different translations of the zoom rects if we want these to be different. - Matt
+
+// Make the input and output images
+show_image("data/Height.txt", outerWidth_input, outerHeight_input, "Height", "#inputs");
+show_image("data/Potential.txt", outerWidth_input, outerHeight_input, "Potential", "#inputs");
+show_image("data/Phase.txt", outerWidth_input, outerHeight_input, "Phase", "#inputs");
+show_image("data/Amplitude.txt", outerWidth_input, outerHeight_input, "Amplitude", "#inputs");
+show_output("data/Photoluminescence.txt", "data/Photoluminescence.txt", outerWidth_output, outerHeight_output, "Photoluminescence", "#output");
+var tree_part = "1_trees_";
+var depth_part = "1_depth_";
+var path_to_json_wes ="../../../python/results/" +  depth_part + tree_part + "1_estimator.json";
+
+// ************** Generate the slider  *****************
+
+generate_slider("Tree Depth", "depth_slider", update_depth);
+generate_slider("# of Trees", "forest_slider", update_trees); 
+
+// Value is the value of the slider (i.e. the Tree Depth or # of Trees etc.)
+
+
+function update_trees(value) {
+    window.tree_part= value + "_trees_"
+    var path_to_json_wes="../../../python/results/" + depth_part + tree_part + "1_estimator.json";
+    console.log(path_to_json_wes);
+    generate_tree(path_to_json_wes);
+}
+function update_depth(value) {
+    window.depth_part= value + "_depth_"
+    var path_to_json_wes="../../../python/results/" + depth_part + tree_part + "1_estimator.json";
+    console.log(path_to_json_wes);
+    generate_tree(path_to_json_wes);
+}
+
+// ************** Generate the tree diagram  *****************
+
+//var path_to_json_wes = update_depth(depth);
+//var path_to_json_wes = update_trees(num_tree);
+</script>
+</body>
+</html>
+
+

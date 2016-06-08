@@ -1,0 +1,42 @@
+Goal: learn how Matt did the layout 
+- see:
+    https://github.com/CSE512-16S/fp-wesleybeckner-mdmurbach-janetmatsen/blob/16cf3a098ce9511702a4e2ed1a67a2e057b6a782/dev/layout_test/index.html
+
+=== Questions: ===
+
+Differently formatted definitions in CSS: what's the . and the # about again? 
+    simplest things w/o formatting:
+        e.g. body
+    things w/ a period:
+        .tile, .cell-hover
+    things w/ a hash:
+        #inputs, #tree, #output
+
+How do you tell it where to put the elements:
+    <div id="inputs"><h1>Inputs</h1></div>
+    <div id="tree"><h1>Tree</h1></div>
+    <div id="output"><h1>Outputs</h1></div>
+
+What is the # doing?
+    e.g. `#inputs` definition in CSS
+    var svg = d3.select("div#output").append("svg")
+
+=== d3 things used: ===
+d3.extent
+    Returns the minimum and maximum value in the given array using natural order. 
+    This is equivalent to calling d3.min and d3.max simultaneously.
+
+d3.text
+    Creates a request for the text file at the specified url with the default mime type "text/plain".
+    https://github.com/d3/d3-request#text
+
+d3.select
+    Example: in `function image_show(filename, title)`:
+        var svg = d3.select("div#inputs").append("svg")
+
+d3.selectAll
+    Example: in `function image_show(filename, title)`:
+        svg.selectAll(".tile")
+        note that svg is a D3 function/object: 
+            `var svg = d3.select("div#inputs").append("svg")`
+

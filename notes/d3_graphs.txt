@@ -1,0 +1,44 @@
+Edges in D3:
+- edges are called "diagonals"
+    - calculate the distance between the nodes & returns a curved path
+    - similar to arc path generator. 
+- to create a diagonal:
+    - var d3.svg.diagonal()
+    - 
+- specity source and target as locations. 
+    - e.g. .source(), .target() 
+    - expects objects with coordinates:
+        - .source({x:10, y:10})
+        - .target({x:300, y:300}
+- still need to append the diagonal to the document
+
+https://www.youtube.com/watch?v=iZ6MSHA4FMU
+- d3.layout.tree:
+    - both a function and an object
+    - has size as an argument
+- load data into tree via d3.json
+    - then you can take advantage of its methods.
+    - method 
+- d3.json("mydata.json", function(data){
+  }
+    - nodes method runs the tree layout and returns the objects
+        - returns an array of the nodes
+        - each of the nodes can be seen with the inspect mode
+        - they have info about parent, children, depth, x and y
+            - x and y store the coordinates used to place the nodes on the document
+    - make the paths ("links") between the nodes (draw edges)
+        - var nodes = tree.nodes(data)
+        - var links = tree.lings(nodes)  # links expects nodes
+        - console.log shows links are an array of objects too   
+            - each object has 2 properties: source and target. 
+            - the source and target things in there have coordinates.
+    - to add a circle to each node: 
+        - first make a group element that holds the nodes together
+            - do some basic data binding: var node = canvas.selectAll(".node")  
+                - selecting everything that has class "node"
+            - he gives them the calss "node" after append with the .attr()
+    - "transform" to translate the points. 
+    - add a path that connects all the nodes at the end. 
+
+
+
