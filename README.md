@@ -10,3 +10,16 @@ Machine learning and high performance computing are revolutionizing strategies u
 By creating automated and adaptive experimental architectures, previously insermountable design spaces can now be considered \cite{UW}. 
 In this spirit, this work aims to illustrate the performance of random forests as implemented in sklearn.ensemble.RandomForestRegressor \cite{scikit-learn} at predicting photoluminescence for perovskite solar cells. 
 The tutorial is meant to be a creative exploration space to introduce other researchers and students to one of the most commonly used machine learning algorithms.
+
+## Effort breakdown
+
+Wesley Beckner brought the inspiration and enthusiasm for the initial project. He also pioneered the text tutorial that users can interact with upon loading the web page. 
+
+Janet lead the tree efforts.  
+This included witing the Python script tree_to_dict.py, which allowed the scikitlearn trees to be represented in D3.  
+This script also encodes the transparency and line thicknesses which highlight features of the tree.   
+She also wrote the scripts generate_tree.js and tree_styling.js, which create and style the D3 trees.  
+
+Matt: overall HTML layout, sliders, 
+
+?? who ended up connecting the sliders to the filenames for loading? 
