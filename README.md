@@ -20,6 +20,4 @@ This included witing the Python script tree_to_dict.py, which allowed the scikit
 This script also encodes the transparency and line thicknesses which highlight features of the tree.   
 She also wrote the scripts generate_tree.js and tree_styling.js, which create and style the D3 trees.  
 
-Matt: overall HTML layout, sliders, images, cursor animations on the images. 
-
-?? who ended up connecting the sliders to the filenames for loading? 
+Matt worked on the overall HTML layout, the creation of the images from the input files (generate_image.js), incorporating the sliders, and the connections/animations between the input/output.
