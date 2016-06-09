@@ -13,7 +13,7 @@ The tutorial is meant to be a creative exploration space to introduce other rese
 
 ## Effort breakdown
 
-Wesley Beckner brought the inspiration and enthusiasm for the initial project. He wrote the python code to use scikit-learn to predict the images, extended Janet's code to pull trees (estimators) from the randomForestRegressor, dabbled with Matt's code and python to properly render the output images and pull to slider values. He also pioneered the text tutorial that users can interact with upon loading the web page. 
+Wesley Beckner brought the inspiration and enthusiasm for the initial project. He wrote the python code to use scikit-learn to predict the images, extended Janet's code to pull trees (estimators) from the randomForestRegressor, dabbled with Matt's code and python to properly render the output images and read slider values. He also pioneered the text tutorial that users can interact with upon loading the web page. 
 
 Janet lead the tree efforts.  
 This included witing the Python script tree_to_dict.py, which allowed the scikitlearn trees to be represented in D3.  
